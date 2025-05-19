@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>UAS Cardiovascular Risk</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Evaluasi Risiko Penyakit Kardiovaskular</h1>
+    <form action="/result" method="post">
+
+      <!-- Data dasar -->
+      <label>Umur:
+        <input type="number" name="umur" min="1" max="120" required />
+      </label>
+      <label>Gender:
+        <select name="gender" required>
+          <option value="pria">Pria</option>
+          <option value="wanita">Wanita</option>
+        </select>
+      </label>
+
+      <!-- Numeric inputs -->
+      <label>Berat (kg):
+        <input type="number" name="berat" min="30" max="200" step="0.1" required />
+      </label>
+      <label>Tinggi (cm):
+        <input type="number" name="tinggi" min="100" max="250" step="0.1" required />
+      </label>
+      <label>HR saat istirahat (bpm):
+        <input type="number" name="hr_rest" min="30" max="200" required />
+      </label>
+      <label>HR saat jalan santai (bpm):
+        <input type="number" name="hr_walk" min="30" max="200" required />
+      </label>
+      <label>Tekanan darah sistolik:
+        <input type="number" name="bp_sys" min="80" max="250" required />
+      </label>
+      <label>Tekanan darah diastolik:
+        <input type="number" name="bp_dia" min="40" max="150" required />
+      </label>
+      <label>Frekuensi olahraga/minggu:
+        <input type="number" name="exercise_freq" min="0" max="14" required />
+      </label>
+
+      <!-- Jogging target -->
+      <fieldset>
+        <legend>Jogging</legend>
+        <p>Apakah berhasil mencapai target?</p>
+        <label><input type="radio" name="jog_yes" value="ya" required /> Ya</label>
+        <label><input type="radio" name="jog_yes" value="tidak" /> Tidak</label>
+        <div id="not-reached" style="display:none;">
+          <label>Jarak tempuh sebelum menyerah (m):
+            <input type="number" name="jarak_tempuh" min="0" />
+          </label>
+        </div>
+        <div id="reached-hr" style="display:none;">
+          <label>HR setelah jogging (bpm):
+            <input type="number" name="hr_jog" min="50" max="220" />
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- 25 pertanyaan ya/tidak sesuai logic.py -->
+      <fieldset>
+        <legend>Pertanyaan Kesehatan</legend>
+        {% for key, text in {
+          'riwayat_keluarga': 'Apakah Anda memiliki anggota keluarga (ayah, ibu, saudara) yang pernah mengalami penyakit jantung atau serangan jantung?',
+          'nyeri_dada': 'Apakah Anda sering merasakan nyeri atau tekanan di bagian dada, terutama saat aktivitas?',
+          'sesak_napas': 'Apakah Anda mudah sesak napas bahkan saat melakukan aktivitas ringan seperti naik tangga atau berjalan?',
+          'pingsan': 'Apakah Anda pernah mengalami pingsan atau hampir pingsan tanpa sebab yang jelas?',
+          'tekanan_darah_tinggi': 'Apakah Anda pernah didiagnosis memiliki tekanan darah tinggi oleh dokter?',
+          'diabetes': 'Apakah Anda pernah didiagnosis menderita diabetes (gula darah tinggi)?',
+          'merokok': 'Apakah Anda saat ini merokok atau memiliki riwayat merokok berat?',
+          'alkohol': 'Apakah Anda rutin mengonsumsi alkohol dalam jumlah sedang hingga berat?',
+          'jantung_berdebar': 'Apakah Anda sering merasakan jantung berdebar cepat, tidak beraturan, atau terasa "loncat"?',
+          'bengkak_kaki': 'Apakah Anda sering mengalami pembengkakan pada kaki, pergelangan, atau perut?',
+          'sering_lelah': 'Apakah Anda merasa mudah lelah meskipun sudah cukup istirahat?',
+          'kolesterol_tinggi': 'Apakah Anda pernah didiagnosis memiliki kolesterol tinggi?',
+          'jarang_olahraga': 'Apakah Anda jarang atau hampir tidak pernah berolahraga dalam seminggu?',
+          'stres_berlebihan': 'Apakah Anda merasa stres berat atau cemas secara terus-menerus dalam kehidupan sehari-hari?',
+          'sulit_tidur': 'Apakah Anda sering mengalami kesulitan tidur nyenyak atau sering terbangun di malam hari?',
+          'pusing_saat_berdiri': 'Apakah Anda sering merasa pusing atau limbung saat bangun dari duduk atau berbaring?',
+          'keringat_tanpa_aktivitas': 'Apakah Anda sering berkeringat berlebihan tanpa melakukan aktivitas berat?',
+          'sleep_apnea': 'Apakah Anda sering mendengkur keras dan berhenti bernapas sesaat saat tidur (sleep apnea)?',
+          'autoimun': 'Apakah Anda memiliki penyakit autoimun seperti lupus atau rheumatoid arthritis?',
+          'tiroid': 'Apakah Anda memiliki gangguan tiroid seperti hipertiroid atau hipotiroid?',
+          'kesemutan': 'Apakah Anda sering merasakan kesemutan atau mati rasa pada kaki atau tangan Anda?',
+          'sakit_kepala': 'Apakah Anda sering mengalami sakit kepala yang cukup berat, terutama jika disertai tekanan darah tinggi?',
+          'junkfood': 'Apakah Anda sering mengonsumsi makanan cepat saji, gorengan, atau makanan tinggi lemak trans?',
+          'tinggi_gula': 'Apakah hasil tes gula darah Anda sering menunjukkan kadar yang tinggi?'
+        }.items() %}
+          <label><input type="checkbox" name="{{ key }}"> {{ text }}</label><br>
+        {% endfor %}
+      </fieldset>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // Toggle fieldset Jogging
+    const radios = document.getElementsByName('jog_yes');
+    const nr = document.getElementById('not-reached');
+    const hr = document.getElementById('reached-hr');
+    radios.forEach(r => r.addEventListener('change', () => {
+      if (r.value === 'ya' && r.checked) {
+        hr.style.display = 'block';
+        nr.style.display = 'none';
+      } else if (r.value === 'tidak' && r.checked) {
+        nr.style.display = 'block';
+        hr.style.display = 'none';
+      }
+    }));
+  </script>
+</body>
+</html>

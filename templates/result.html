@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Hasil Evaluasi</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Hasil Evaluasi Risiko</h1>
+    <p><strong>Umur:</strong> {{ umur }} tahun &nbsp;|&nbsp; <strong>Gender:</strong> {{ gender }}</p>
+    <p><strong>BMI:</strong> {{ '%.2f' % bmi }}</p>
+    <p><strong>Target Jogging:</strong> {{ target }} m</p>
+    <p><strong>Tingkat Parah:</strong> {{ tingkat_parah }}</p>
+    <p><strong>Abnormal HR setelah jogging:</strong> {{ 'Ya' if abnormal_hr else 'Tidak' }}</p>
+
+    <h2 class="mt-6">Persentase Risiko (terurut):</h2>
+    {% if hasil %}
+      {% for penyakit, persen in hasil %}
+        <div class="result-item">
+          <strong>{{ penyakit.replace('_', ' ').title() }}:</strong> {{ persen }}%
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Tidak ada data risiko yang tersedia.</p>
+    {% endif %}
+
+    <div class="mt-6">
+      <a href="/" style="color:#3d5a80; text-decoration:none;">← Kembali ke Form</a>
+    </div>
+  </div>
+</body>
+</html>
