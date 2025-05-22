@@ -56,7 +56,8 @@ def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, ex
         "penyakit jantung koroner": 0,
         "serangan jantung": 0,
         "hipertensi pulmonal": 0,
-        "penyakit arteri perifer": 0
+        "penyakit arteri perifer": 0,
+        "stroke": 0
     }
     if hr_rest > 100:
         risk["aritmia"] += 15
@@ -67,6 +68,7 @@ def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, ex
         risk["gagal jantung"] += 10
         risk["penyakit arteri perifer"] += 10
         risk["penyakit jantung koroner"] += 10
+        risk["stroke"] += 10
     if bp_sys >= 140 or bp_dia >= 90:
         risk["hipertensi pulmonal"] += 15
         risk["serangan jantung"] += 10
@@ -88,7 +90,8 @@ def evaluate_total_risk(tingkat_parah, abnormal_hr, ya_tidak_answers, numeric_ri
         "perikarditis": 5 + tingkat_parah * 3,
         "penyakit arteri perifer": 5 + tingkat_parah * 3,
         "fibrilasi atrium": 5 + tingkat_parah * 3,
-        "blok jantung": 5 + tingkat_parah * 3
+        "blok jantung": 5 + tingkat_parah * 3,
+        "stroke": 5 + tingkat_parah * 3
     }
 
     # Risiko berbasis detak jantung abnormal setelah jogging
