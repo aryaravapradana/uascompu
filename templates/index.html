@@ -7,6 +7,24 @@
 </head>
 <body>
   <div class="container">
+<form method="post">
+  <fieldset>
+    <legend>Hitung Target Jogging</legend>
+    <label>Umur: <input type="number" name="umur" required></label>
+    <label>Gender:
+      <select name="gender" required>
+        <option value="pria">Pria</option>
+        <option value="wanita">Wanita</option>
+      </select>
+    </label>
+    <button type="submit">Hitung Target</button>
+  </fieldset>
+</form>
+
+{% if target %}
+  <p><strong>Target Jogging Anda:</strong> {{ target }} meter</p>
+{% endif %}
+
     <h1>Evaluasi Risiko Penyakit Kardiovaskular</h1>
     <form action="/result" method="post">
 
