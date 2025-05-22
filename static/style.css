@@ -79,10 +79,11 @@ select {
   width: 100%;
   padding: 10px 12px;
   border: none;
-  border-bottom: 2px solid #222222;
+  border-bottom: 2px solid #ffffff;
   background: transparent;
   color: #ffffff;
   font-size: 1rem;
+  box-sizing: border-box;
   transition: border-color 0.3s;
 }
 input[type="number"]:focus,
@@ -91,8 +92,33 @@ select:focus {
   border-bottom-color: #00ffd6;
 }
 input[type="number"]::placeholder {
-  color: #555555;
+  color: #000000;
 }
+
+/* Style dropdown select */
+select {
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  border-bottom: 2px solid #ffffff;
+  appearance: none;
+}
+
+/* Untuk tampilan option di dalam dropdown (tidak semua browser support penuh) */
+select option {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+/* Tambahan untuk memperjelas dropdown (khusus jika mau pakai panah custom) */
+select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%207%205-7z'%20fill%3D'%23ffffff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 7px;
+  padding-right: 36px;
+}
+
 
 /* Fieldset & Legend */
 fieldset {
