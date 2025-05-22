@@ -57,7 +57,8 @@ def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, ex
         "serangan jantung": 0,
         "hipertensi pulmonal": 0,
         "penyakit arteri perifer": 0,
-        "stroke": 0
+        "stroke": 0,
+        "cardiac arrest": 0
     }
     if hr_rest > 100:
         risk["aritmia"] += 15
@@ -67,7 +68,7 @@ def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, ex
     if bmi >= 30:
         risk["gagal jantung"] += 10
         risk["penyakit arteri perifer"] += 10
-        risk["penyakit jantung koroner"] += 10
+        risk["penyakit jantung koroner"] += 7
         risk["stroke"] += 10
     if bp_sys >= 140 or bp_dia >= 90:
         risk["hipertensi pulmonal"] += 15
@@ -91,7 +92,10 @@ def evaluate_total_risk(tingkat_parah, abnormal_hr, ya_tidak_answers, numeric_ri
         "penyakit arteri perifer": 5 + tingkat_parah * 3,
         "fibrilasi atrium": 5 + tingkat_parah * 3,
         "blok jantung": 5 + tingkat_parah * 3,
-        "stroke": 5 + tingkat_parah * 3
+        "stroke": 5 + tingkat_parah * 3,
+        "cardiac arrest": 5 + tingkat_parah * 3,
+        "aterosklerosis": 5 + tingkat_parah * 3
+
     }
 
     # Risiko berbasis detak jantung abnormal setelah jogging
@@ -101,29 +105,29 @@ def evaluate_total_risk(tingkat_parah, abnormal_hr, ya_tidak_answers, numeric_ri
 
     # Tambahan pertanyaan ya/tidak (25 total)
     pertanyaan_penyakit = {
-        "riwayat_keluarga": ["penyakit jantung koroner", "serangan jantung", "fibrilasi atrium"],
+        "riwayat_keluarga": ["penyakit jantung koroner", "serangan jantung", "fibrilasi atrium", "cardiac arrest", "aterosklerosis"],
         "nyeri_dada": ["penyakit jantung koroner", "serangan jantung"],
         "sesak_napas": ["gagal jantung", "hipertensi pulmonal"],
         "pingsan": ["aritmia", "blok jantung"],
-        "tekanan_darah_tinggi": ["hipertensi pulmonal", "gagal jantung"],
-        "diabetes": ["penyakit jantung koroner", "serangan jantung"],
+        "tekanan_darah_tinggi": ["hipertensi pulmonal", "gagal jantung", "aterosklerosis"],
+        "diabetes": ["penyakit jantung koroner", "serangan jantung", "aterosklerosis"],
         "merokok": ["penyakit arteri perifer", "penyakit jantung koroner"],
-        "alkohol": ["kardiomiopati"],
+        "alkohol": ["kardiomiopati", "cardiac arrest"],
         "jantung_berdebar": ["aritmia", "fibrilasi atrium"],
         "bengkak_kaki": ["gagal jantung", "perikarditis"],
-        "sering_lelah": ["gagal jantung", "kardiomiopati"],
-        "kolesterol_tinggi": ["penyakit jantung koroner"],
-        "jarang_olahraga": ["penyakit arteri perifer"],
+        "sering_lelah": ["gagal jantung", "kardiomiopati", "cardiac arrest"],
+        "kolesterol_tinggi": ["penyakit jantung koroner", "aterosklerosis"],
+        "jarang_olahraga": ["penyakit arteri perifer", "stroke"],
         "stres_berlebihan": ["aritmia", "serangan jantung"],
-        "sulit_tidur": ["fibrilasi atrium"],
+        "sulit_tidur": ["fibrilasi atrium", "stroke"],
         "pusing_saat_berdiri": ["blok jantung"],
         "keringat_tanpa_aktivitas": ["serangan jantung"],
         "sleep_apnea": ["gagal jantung"],
-        "autoimun": ["perikarditis", "endokarditis"],
-        "tiroid": ["aritmia"],
+        "autoimun": ["perikarditis", "endokarditis", "aterosklerosis"],
+        "tiroid": ["aritmia", "stroke"],
         "kesemutan": ["penyakit arteri perifer"],
         "sakit_kepala": ["hipertensi pulmonal"],
-        "junkfood": ["penyakit jantung koroner"],
+        "junkfood": ["penyakit jantung koroner", "stroke"],
         "tinggi_gula": ["kardiomiopati"],
     }
 
@@ -219,8 +223,8 @@ for penyakit, persen in sorted(hasil.items(), key=lambda x: x[1], reverse=True):
 
 tertinggi = max(hasil.values())
 if tertinggi >= 50:
-    print("\n⚠️ Mempunyai Resiko tinggi. Segera berkonsultasi dengan spesialis jantung.")
+    print("\n⚠️  Mempunyai Resiko tinggi. Segera berkonsultasi dengan spesialis jantung.")
 elif tertinggi >= 30:
-    print("\n⚠️ Mmempunyai Resiko sedang. Lakukan pemeriksaan lanjutan bila diperlukan.")
+    print("\n⚠️  Mempunyai Resiko sedang. Lakukan pemeriksaan lanjutan bila diperlukan.")
 else:
     print("\n✅ Mempunyai Resiko rendah. Pertahankan gaya hidup sehat.")
