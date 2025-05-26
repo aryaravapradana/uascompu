@@ -1,209 +1,257 @@
 /* === Import Google Fonts === */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-/* === Typography Rules === */
-/* Header (Space Grotesk) */
-h1, h2 {
-  font-family: 'Space Grotesk', sans-serif;
+/* === CSS Variables === */
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --text-muted: #cccccc;
+    --border-color: rgba(255, 255, 255, 0.4);
+    --hover-glow: rgba(255, 255, 255, 0.6);
+    --focus-glow: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.04);
 }
 
-/* Pertanyaan Form (Poppins Bold) */
-label, legend {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-}
-
-/* Jawaban Form & Hasil (Poppins Regular) */
-input[type="number"],
-select,
-.result-item {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-}
+/* === Base Styles === */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Space Grotesk', sans-serif;
-  background: #000000;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.8; /* More line height for readability */
+    padding: 30px; /* More base padding */
+    overflow-x: hidden;
+    font-size: 20px; /* INCREASED BASE FONT SIZE FOR DESKTOP */
 }
 
 .container {
-  max-width: 800px;
-  margin: 40px auto;
-  background: #0a0a0a;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-.container:hover {
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-  transform: translateY(-4px);
+    width: 90%; /* Ambil 90% lebar layar */
+    max-width: 1600px; /* Tapi jangan lebih lebar dari 1600px */
+    margin: 50px auto; /* More margin */
+    background: var(--bg-color);
+    padding: 50px 60px; /* INCREASED Padding */
+    border-radius: 16px; /* More rounded */
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); /* Enhanced shadow */
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s forwards ease-out;
 }
 
-/* Headers tanpa glow, slide-in dari atas */
 h1, h2 {
-  color: #ffffff;
-  text-align: center;
-  margin-bottom: 20px;
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: slideDown 0.8s forwards ease-out;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 50px; /* INCREASED */
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); /* Enhanced glow */
+    font-weight: 700;
+    letter-spacing: 2px; /* INCREASED */
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInDown 0.8s forwards ease-out 0.3s;
 }
-h2 {
-  animation-delay: 0.2s;
-}
+h1 { font-size: 3.2rem; margin-bottom: 60px; } /* INCREASED */
+h2 { font-size: 2.4rem; margin-top: 70px; } /* INCREASED */
+p { margin-bottom: 18px; font-size: 1.15rem; } /* INCREASED */
 
-/* Labels */
-label {
-  display: block;
-  margin-top: 12px;
-  color: #cccccc;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-label:hover {
-  color: #00ffd6;
-}
-
-/* Inputs & Select dengan focus bar animation */
-.input-wrap {
-  position: relative;
-  margin-top: 6px;
-}
-input[type="number"],
-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: none;
-  border-bottom: 2px solid #ffffff;
-  background: transparent;
-  color: #ffffff;
-  font-size: 1rem;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
-}
-input[type="number"]:focus,
-select:focus {
-  outline: none;
-  border-bottom-color: #00ffd6;
-}
-input[type="number"]::placeholder {
-  color: #000000;
-}
-
-/* Style dropdown select */
-select {
-  background-color: #111111;
-  color: #ffffff;
-  border: none;
-  border-bottom: 2px solid #ffffff;
-  appearance: none;
-}
-
-/* Untuk tampilan option di dalam dropdown (tidak semua browser support penuh) */
-select option {
-  background-color: #111111;
-  color: #ffffff;
-}
-
-/* Tambahan untuk memperjelas dropdown (khusus jika mau pakai panah custom) */
-select {
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%207%205-7z'%20fill%3D'%23ffffff'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 10px 7px;
-  padding-right: 36px;
-}
-
-
-/* Fieldset & Legend */
+/* === Form Styles === */
+form { margin-bottom: 60px; }
 fieldset {
-  margin-top: 20px;
-  border: 1px solid #222222;
-  padding: 15px;
-  border-radius: 4px;
-  background: #0d0d0d;
-  transition: background 0.3s;
+    border: 1px dashed var(--border-color);
+    padding: 40px; /* INCREASED */
+    border-radius: 12px; /* More rounded */
+    margin-bottom: 40px; /* INCREASED */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-fieldset:hover {
-  background: #111111;
-}
+fieldset:hover { border-color: var(--focus-glow); box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); }
 legend {
-  font-weight: bold;
-  color: #00c9a7;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 0 25px; /* INCREASED */
+    font-size: 1.6rem; /* INCREASED */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+label { display: block; margin-bottom: 30px; color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s ease; } /* INCREASED */
+
+input[type="number"], select {
+    width: 100%;
+    padding: 16px 8px; /* INCREASED */
+    border: none;
+    border-bottom: 2px solid var(--border-color);
+    background: transparent;
+    color: var(--text-color);
+    font-size: 1.2rem; /* INCREASED */
+    font-family: 'Poppins', sans-serif;
+    transition: border-bottom 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    margin-top: 10px; /* INCREASED */
+}
+input[type="number"]:focus, select:focus { border-bottom: 2px solid var(--focus-glow); box-shadow: 0 8px 15px -8px rgba(255, 255, 255, 0.3); } /* Enhanced focus */
+select {
+    background-color: var(--bg-color);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20viewBox%3D'0%200%2014%2010'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l7%2010%207-10z'%20fill%3D'%23ffffff'/%3E%3C/svg%3E"); /* Bigger arrow */
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Adjusted position */
+    padding-right: 40px; /* More padding */
+}
+select option { background-color: #1a1a1a; color: var(--text-color); }
+
+/* Custom Checkbox & Radio */
+.checkbox-wrapper { margin-bottom: 25px; display: flex; align-items: flex-start; }
+input[type="checkbox"], input[type="radio"] { display: none; }
+
+input[type="checkbox"] + label, input[type="radio"] + label {
+    position: relative;
+    padding-left: 50px; /* INCREASED padding */
+    cursor: pointer;
+    font-size: 1.25rem; /* INCREASED FONT SIZE for questions */
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+    line-height: 1.6;
+    display: block;
+}
+input[type="checkbox"] + label:hover, input[type="radio"] + label:hover { color: var(--text-color); }
+
+input[type="checkbox"] + label::before, input[type="radio"] + label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px; /* Adjusted alignment for bigger font */
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--border-color);
+    background: var(--bg-color);
+    transition: all 0.3s ease;
+}
+input[type="radio"] + label::before { border-radius: 50%; }
+input[type="checkbox"] + label::before { border-radius: 6px; }
+
+input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
+    border-color: var(--focus-glow);
+    box-shadow: 0 0 15px var(--hover-glow);
+}
+input[type="checkbox"] + label::after, input[type="radio"] + label::after {
+    content: ''; position: absolute; opacity: 0; transition: all 0.3s ease; transform: scale(0);
+}
+input[type="radio"]:checked + label::after {
+    left: 9px;
+    top: 12px; /* Adjusted position */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%; background: var(--focus-glow); opacity: 1; transform: scale(1.2);
+}
+input[type="checkbox"]:checked + label::after {
+    left: 10px;
+    top: 8px; /* Adjusted position */
+    width: 8px;
+    height: 16px;
+    border: solid var(--focus-glow); border-width: 0 3px 3px 0;
+    background: transparent; opacity: 1; transform: rotate(45deg) scale(1);
+}
+/* Biarkan .fieldset p dan lainnya tetap sama */
+fieldset p { margin-bottom: 20px; color: var(--text-color); font-size: 1.2rem; }
+/* Sesuaikan radio button di jogging agar font-nya tidak ikut besar jika tidak diinginkan */
+fieldset#form-target .checkbox-wrapper input[type="radio"] + label,
+fieldset legend:contains('Jogging') + p + .checkbox-wrapper input[type="radio"] + label {
+    font-size: 1.1rem;
 }
 
-/* Buttons dengan ripple effect */
-button {
-  position: relative;
-  overflow: hidden;
-  padding: 12px 20px;
-  margin-top: 20px;
-  background: linear-gradient(45deg, #00ffd6, #00a8ff);
-  border: none;
-  border-radius: 4px;
-  color: #000000;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: transform 0.2s ease-out;
+/* Button */
+button[type="submit"] {
+    display: block;
+    width: 260px; /* INCREASED */
+    margin: 40px auto 10px auto; /* Adjusted margin */
+    padding: 20px 30px; /* INCREASED */
+    background: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem; /* INCREASED */
+    font-weight: 500;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px; /* INCREASED */
 }
-button:hover {
-  transform: scale(1.05);
+button[type="submit"]::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: var(--text-color); transition: left 0.4s ease; z-index: -1;
 }
-button:after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255,255,255,0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.4s ease-out, height 0.4s ease-out;
+button[type="submit"]:hover { color: var(--bg-color); box-shadow: 0 0 30px var(--hover-glow); } /* Enhanced glow */
+button[type="submit"]:hover::before { left: 0; }
+
+/* === Target Display (NEW & SIZED UP) === */
+.target-display {
+    text-align: center;
+    margin-top: 40px; /* INCREASED */
+    padding: 20px; /* INCREASED */
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px; /* More rounded */
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
 }
-button:active:after {
-  width: 200px;
-  height: 200px;
-  transition: 0s;
+.target-display p {
+    font-size: 1.6rem; /* INCREASED SIGNIFICANTLY */
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Enhanced glow */
+    font-family: 'Space Grotesk', sans-serif;
+}
+.target-display p strong {
+    color: #cccccc;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem; /* Make label slightly smaller than number */
+    margin-right: 10px; /* Add space */
 }
 
-/* Result Items */
+/* === Result Styles === */
 .result-item {
-  padding: 10px 0;
-  border-bottom: 1px solid #222222;
-  transition: background 0.3s, transform 0.2s;
+    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; /* More rounded */
+    padding: 30px 35px; /* INCREASED */
+    margin-bottom: 30px; /* INCREASED */
+    display: flex; justify-content: space-between; align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    opacity: 0; transform: translateX(-30px); animation: slideIn 0.6s forwards ease-out;
+    animation-delay: calc(0.5s + var(--index) * 0.1s);
 }
-.result-item:last-child {
-  border-bottom: none;
+.result-item:hover { transform: translateX(0) scale(1.02); border-color: var(--focus-glow); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); } /* Enhanced hover */
+.disease-info { flex-grow: 1; padding-right: 30px; }
+.disease-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.6rem; color: var(--text-color); margin-bottom: 10px; } /* INCREASED */
+.disease-description { font-size: 1.1rem; color: var(--text-muted); font-weight: 300; } /* INCREASED */
+.percentage-chart { position: relative; width: 80px; height: 80px; flex-shrink: 0; } /* Keeping 80px for now, but text is bigger */
+.percentage-svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)); }
+.circle-bg, .circle-progress { fill: none; stroke-width: 9; stroke-linecap: round; }
+.circle-bg { stroke: rgba(255, 255, 255, 0.2); }
+.circle-progress {
+    stroke: var(--text-color); stroke-dasharray: 213.6; stroke-dashoffset: 213.6;
+    animation: drawCircle 1.2s forwards ease-out; animation-delay: calc(0.7s + var(--index) * 0.1s);
 }
-.result-item:hover {
-  background: #111111;
-  transform: translateX(8px);
+.percentage-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 1.4rem; font-weight: 600; color: var(--text-color); font-family: 'Space Grotesk', sans-serif; /* INCREASED */
 }
+.mt-6 { margin-top: 60px; text-align: center; } /* INCREASED */
+.mt-6 a {
+    color: var(--text-muted); text-decoration: none; font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem; border: 1px solid var(--border-color); padding: 12px 25px; /* INCREASED */
+    border-radius: 30px; transition: all 0.3s ease; /* INCREASED */
+}
+.mt-6 a:hover { color: var(--text-color); border-color: var(--text-color); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
 
-/* Animations */
-@keyframes slideDown {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* === Animations === */
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDown { to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+@keyframes drawCircle { to { stroke-dashoffset: var(--offset); } }
 
-/* Chrome, Safari, Edge, Opera */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+/* === Spin Button Removal === */
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }

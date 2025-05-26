@@ -4,133 +4,210 @@
   <meta charset="UTF-8" />
   <title>UAS Cardiovascular Risk</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    .target-display {
+        text-align: center; /* Membuat teks di tengah */
+        margin-top: 30px; /* Jarak dari tombol */
+        padding: 15px; /* Sedikit padding internal */
+        background-color: rgba(255, 255, 255, 0.05); /* Latar belakang subtle (opsional) */
+        border-radius: 6px; /* Sudut agak bulat (opsional) */
+        border: 1px dashed rgba(255, 255, 255, 0.2); /* Border subtle (opsional) */
+    }
+
+    .target-display p {
+        font-size: 1.4rem; /* Ukuran font lebih besar */
+        font-weight: 600; /* Sedikit lebih tebal */
+        color: #ffffff; /* Warna putih cerah */
+        margin: 0; /* Hapus margin default p */
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* Beri glow */
+        font-family: 'Space Grotesk', sans-serif; /* Samakan font dengan judul */
+    }
+
+    .target-display p strong {
+        color: #cccccc; /* Warna label sedikit beda */
+        font-weight: 400; /* Lebih ringan */
+        font-family: 'Poppins', sans-serif; /* Font biasa untuk label */
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-<form method="post">
-  <fieldset>
-    <legend>Hitung Target Jogging</legend>
-    <label>Umur: <input type="number" name="umur" required></label>
-    <label>Gender:
-      <select name="gender" required>
-        <option value="pria">Pria</option>
-        <option value="wanita">Wanita</option>
-      </select>
-    </label>
-    <button type="submit">Hitung Target</button>
-  </fieldset>
-</form>
-
-{% if target %}
-  <p><strong>Target Jogging Anda:</strong> {{ target }} meter</p>
-{% endif %}
-
     <h1>Evaluasi Risiko Penyakit Kardiovaskular</h1>
-    <form action="/result" method="post">
 
-      <!-- Data dasar -->
-      <label>Umur:
-        <input type="number" name="umur" min="1" max="120" required />
-      </label>
-      <label>Gender:
-        <select name="gender" required>
-          <option value="pria">Pria</option>
-          <option value="wanita">Wanita</option>
-        </select>
-      </label>
-
-      <!-- Numeric inputs -->
-      <label>Berat (kg):
-        <input type="number" name="berat" min="30" max="200" step="0.1" required />
-      </label>
-      <label>Tinggi (cm):
-        <input type="number" name="tinggi" min="100" max="250" step="0.1" required />
-      </label>
-      <label>HR saat istirahat (bpm):
-        <input type="number" name="hr_rest" min="30" max="200" required />
-      </label>
-      <label>HR saat jalan santai (bpm):
-        <input type="number" name="hr_walk" min="30" max="200" required />
-      </label>
-      <label>Tekanan darah sistolik:
-        <input type="number" name="bp_sys" min="80" max="250" required />
-      </label>
-      <label>Tekanan darah diastolik:
-        <input type="number" name="bp_dia" min="40" max="150" required />
-      </label>
-      <label>Frekuensi olahraga/minggu:
-        <input type="number" name="exercise_freq" min="0" max="14" required />
-      </label>
-
-      <!-- Jogging target -->
+    <form method="post" id="form-target" action="/">
       <fieldset>
-        <legend>Jogging</legend>
-        <p>Apakah berhasil mencapai target?</p>
-        <label><input type="radio" name="jog_yes" value="ya" required /> Ya</label>
-        <label><input type="radio" name="jog_yes" value="tidak" /> Tidak</label>
-        <div id="not-reached" style="display:none;">
-          <label>Jarak tempuh sebelum menyerah (m):
-            <input type="number" name="jarak_tempuh" min="0" />
-          </label>
-        </div>
-        <div id="reached-hr" style="display:none;">
-          <label>HR setelah jogging (bpm):
-            <input type="number" name="hr_jog" min="50" max="220" />
-          </label>
-        </div>
-      </fieldset>
+        <legend>Data & Target Jogging</legend>
+        <label>Umur:
+            <input type="number" name="umur_target" id="umur_input" required value="{{ umur or '' }}">
+        </label>
+        <label>Gender:
+            <select name="gender_target" id="gender_input" required>
+                <option value="pria" {% if gender == 'pria' %}selected{% endif %}>Pria</option>
+                <option value="wanita" {% if gender == 'wanita' %}selected{% endif %}>Wanita</option>
+            </select>
+        </label>
+        <button type="submit">Hitung Target</button>
 
-      <!-- 25 pertanyaan ya/tidak sesuai logic.py -->
-      <fieldset>
-        <legend>Pertanyaan Kesehatan</legend>
-        {% for key, text in {
-          'riwayat_keluarga': 'Memiliki anggota keluarga (ayah, ibu, saudara) yang pernah mengalami penyakit jantung atau serangan jantung',
-          'nyeri_dada': 'Sering merasakan nyeri atau tekanan di bagian dada, terutama saat aktivitas',
-          'sesak_napas': 'Mudah sesak napas bahkan saat melakukan aktivitas ringan seperti naik tangga atau berjalan',
-          'pingsan': 'Kejadian pingsan atau hampir pingsan tanpa sebab yang jelas',
-          'tekanan_darah_tinggi': 'Pernah didiagnosis memiliki tekanan darah tinggi oleh dokter',
-          'diabetes': 'Pernah didiagnosis menderita diabetes (gula darah tinggi)',
-          'merokok': 'Saat ini merokok atau memiliki riwayat merokok berat?',
-          'alkohol': 'Rutin mengonsumsi alkohol dalam jumlah sedang hingga berat',
-          'jantung_berdebar': 'Sering merasakan jantung berdebar cepat, tidak beraturan, atau terasa "loncat"',
-          'bengkak_kaki': 'Sering mengalami pembengkakan pada kaki, pergelangan, atau perut',
-          'sering_lelah': 'Merasa mudah lelah meskipun sudah cukup istirahat',
-          'kolesterol_tinggi': 'Pernah didiagnosis memiliki kolesterol tinggi',
-          'jarang_olahraga': 'Jarang atau hampir tidak pernah berolahraga dalam seminggu',
-          'stres_berlebihan': 'Merasa stres berat atau cemas secara terus-menerus dalam kehidupan sehari-hari',
-          'sulit_tidur': 'Sering mengalami kesulitan tidur nyenyak atau sering terbangun di malam hari',
-          'pusing_saat_berdiri': 'Sering merasa pusing atau limbung saat bangun dari duduk atau berbaring',
-          'keringat_tanpa_aktivitas': 'Sering berkeringat berlebihan tanpa melakukan aktivitas berat',
-          'sleep_apnea': 'Mendengkur keras dan berhenti bernapas sesaat saat tidur (sleep apnea)',
-          'autoimun': 'Memiliki penyakit autoimun seperti lupus atau rheumatoid arthritis',
-          'tiroid': 'Memiliki gangguan tiroid seperti hipertiroid atau hipotiroid',
-          'kesemutan': 'Sering merasakan kesemutan atau mati rasa pada kaki atau tangan Anda',
-          'sakit_kepala': 'Sering mengalami sakit kepala yang cukup berat, terutama jika disertai tekanan darah tinggi',
-          'junkfood': 'Sering mengonsumsi makanan cepat saji, gorengan, atau makanan tinggi lemak',
-          'tinggi_gula': 'Hasil tes gula darah Anda sering menunjukkan kadar yang tinggi'
-        }.items() %}
-          <label><input type="checkbox" name="{{ key }}"> {{ text }}</label><br>
-        {% endfor %}
-      </fieldset>
+        <div class="target-display">
+            {% if target is not none %}
+              <p><strong>Target Jogging Anda:</strong> {{ target }} meter</p>
+            {% else %}
+              <p><strong>Target Jogging Anda:</strong> - meter</p>
+            {% endif %}
+        </div>
+        </fieldset>
+    </form>
 
-      <button type="submit">Submit</button>
+    {# {% if target is not none %}
+      <p><strong>Target Jogging Anda:</strong> {{ target }} meter</p>
+    {% endif %} #}
+
+    <form action="/result" method="post" id="form-risiko">
+
+        <input type="hidden" name="umur" id="umur_hidden">
+        <input type="hidden" name="gender" id="gender_hidden">
+
+        <fieldset>
+            <legend>Data Tambahan</legend>
+            <label>Berat (kg):
+                <input type="number" name="berat" min="30" max="200" step="0.1" required />
+            </label>
+            <label>Tinggi (cm):
+                <input type="number" name="tinggi" min="100" max="250" step="0.1" required />
+            </label>
+            <label>HR saat istirahat (bpm):
+                <input type="number" name="hr_rest" min="30" max="200" required />
+            </label>
+            <label>HR saat jalan santai (bpm):
+                <input type="number" name="hr_walk" min="30" max="200" required />
+            </label>
+            <label>Tekanan darah sistolik:
+                <input type="number" name="bp_sys" min="80" max="250" required />
+            </label>
+            <label>Tekanan darah diastolik:
+                <input type="number" name="bp_dia" min="40" max="150" required />
+            </label>
+            <label>Frekuensi olahraga/minggu:
+                <input type="number" name="exercise_freq" min="0" max="14" required />
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Jogging</legend>
+            <p>Apakah berhasil mencapai target?</p>
+            <div class="checkbox-wrapper">
+                <input type="radio" name="jog_yes" value="ya" id="jog_ya" required />
+                <label for="jog_ya"> Ya</label>
+            </div>
+            <div class="checkbox-wrapper">
+                <input type="radio" name="jog_yes" value="tidak" id="jog_tidak" />
+                <label for="jog_tidak"> Tidak</label>
+            </div>
+            <div id="not-reached" style="display:none;">
+                <label>Jarak tempuh sebelum menyerah (m):
+                    <input type="number" name="jarak_tempuh" min="0" />
+                </label>
+            </div>
+            <div id="reached-hr" style="display:none;">
+                <label>HR setelah jogging (bpm):
+                    <input type="number" name="hr_jog" min="50" max="220" />
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Pertanyaan Kesehatan</legend>
+            {% for key, text in {
+                'riwayat_keluarga': 'Memiliki anggota keluarga (ayah, ibu, saudara) yang pernah mengalami penyakit jantung atau serangan jantung',
+                'nyeri_dada': 'Sering merasakan nyeri atau tekanan di bagian dada, terutama saat aktivitas',
+                'sesak_napas': 'Mudah sesak napas bahkan saat melakukan aktivitas ringan seperti naik tangga atau berjalan',
+                'pingsan': 'Kejadian pingsan atau hampir pingsan tanpa sebab yang jelas',
+                'tekanan_darah_tinggi': 'Pernah didiagnosis memiliki tekanan darah tinggi oleh dokter',
+                'diabetes': 'Pernah didiagnosis menderita diabetes (gula darah tinggi)',
+                'merokok': 'Saat ini merokok atau memiliki riwayat merokok berat?',
+                'alkohol': 'Rutin mengonsumsi alkohol dalam jumlah sedang hingga berat',
+                'jantung_berdebar': 'Sering merasakan jantung berdebar cepat, tidak beraturan, atau terasa "loncat"',
+                'bengkak_kaki': 'Sering mengalami pembengkakan pada kaki, pergelangan, atau perut',
+                'sering_lelah': 'Merasa mudah lelah meskipun sudah cukup istirahat',
+                'kolesterol_tinggi': 'Pernah didiagnosis memiliki kolesterol tinggi',
+                'jarang_olahraga': 'Jarang atau hampir tidak pernah berolahraga dalam seminggu',
+                'stres_berlebihan': 'Merasa stres berat atau cemas secara terus-menerus dalam kehidupan sehari-hari',
+                'sulit_tidur': 'Sering mengalami kesulitan tidur nyenyak atau sering terbangun di malam hari',
+                'pusing_saat_berdiri': 'Sering merasa pusing atau limbung saat bangun dari duduk atau berbaring',
+                'keringat_tanpa_aktivitas': 'Sering berkeringat berlebihan tanpa melakukan aktivitas berat',
+                'sleep_apnea': 'Mendengkur keras dan berhenti bernapas sesaat saat tidur (sleep apnea)',
+                'autoimun': 'Memiliki penyakit autoimun seperti lupus atau rheumatoid arthritis',
+                'tiroid': 'Memiliki gangguan tiroid seperti hipertiroid atau hipotiroid',
+                'kesemutan': 'Sering merasakan kesemutan atau mati rasa pada kaki atau tangan Anda',
+                'sakit_kepala': 'Sering mengalami sakit kepala yang cukup berat, terutama jika disertai tekanan darah tinggi',
+                'junkfood': 'Sering mengonsumsi makanan cepat saji, gorengan, atau makanan tinggi lemak',
+                'tinggi_gula': 'Hasil tes gula darah Anda sering menunjukkan kadar yang tinggi'
+            }.items() %}
+              <div class="checkbox-wrapper">
+                  <input type="checkbox" name="{{ key }}" id="{{ key }}">
+                  <label for="{{ key }}">{{ text }}</label>
+              </div>
+            {% endfor %}
+        </fieldset>
+
+        <button type="submit">Submit Evaluasi</button>
     </form>
   </div>
 
   <script>
+    // Ambil elemen input
+    const umurInput = document.getElementById('umur_input');
+    const genderInput = document.getElementById('gender_input');
+    const umurHidden = document.getElementById('umur_hidden');
+    const genderHidden = document.getElementById('gender_hidden');
+
+    // Fungsi untuk menyalin nilai
+    function syncInputs() {
+        umurHidden.value = umurInput.value;
+        genderHidden.value = genderInput.value;
+    }
+
+    // Tambahkan event listener
+    umurInput.addEventListener('input', syncInputs);
+    genderInput.addEventListener('change', syncInputs);
+
     // Toggle fieldset Jogging
-    const radios = document.getElementsByName('jog_yes');
+    const radios = document.querySelectorAll('input[name="jog_yes"]');
     const nr = document.getElementById('not-reached');
     const hr = document.getElementById('reached-hr');
+
     radios.forEach(r => r.addEventListener('change', () => {
-      if (r.value === 'ya' && r.checked) {
-        hr.style.display = 'block';
-        nr.style.display = 'none';
-      } else if (r.value === 'tidak' && r.checked) {
-        nr.style.display = 'block';
-        hr.style.display = 'none';
-      }
+        const nrInput = nr.querySelector('input');
+        const hrInput = hr.querySelector('input');
+
+        if (r.id === 'jog_ya' && r.checked) {
+            hr.style.display = 'block';
+            nr.style.display = 'none';
+            if (hrInput) hrInput.required = true;
+            if (nrInput) { nrInput.required = false; nrInput.value = ''; } // Clear value when hidden
+        } else if (r.id === 'jog_tidak' && r.checked) {
+            nr.style.display = 'block';
+            hr.style.display = 'none';
+            if (nrInput) nrInput.required = true;
+            if (hrInput) { hrInput.required = false; hrInput.value = ''; } // Clear value when hidden
+        }
     }));
+
+    // Inisialisasi saat load
+    document.addEventListener('DOMContentLoaded', () => {
+        syncInputs(); // Panggil saat load untuk menyalin nilai awal (jika ada)
+        const checkedRadio = document.querySelector('input[name="jog_yes"]:checked');
+        if (checkedRadio) {
+             checkedRadio.dispatchEvent(new Event('change'));
+        } else {
+             nr.style.display = 'none';
+             hr.style.display = 'none';
+             const nrInput = nr.querySelector('input');
+             const hrInput = hr.querySelector('input');
+             if (nrInput) nrInput.required = false;
+             if (hrInput) hrInput.required = false;
+        }
+    });
   </script>
 </body>
 </html>
