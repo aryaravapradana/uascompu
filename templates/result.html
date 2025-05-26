@@ -1,33 +1,136 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Hasil Evaluasi</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Hasil Evaluasi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS untuk Summary Grid (Bisa dipindah ke style.css) */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Grid responsif */
+            gap: 25px; /* Jarak antar kartu */
+            margin-bottom: 60px; /* Jarak ke bagian risiko */
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 40px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
+        }
+
+        .summary-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+        }
+
+        .summary-card i { /* Style untuk Ikon Font Awesome */
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--hover-glow);
+            display: block;
+        }
+
+        .summary-label {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.8rem; /* Ukuran nilai lebih besar */
+            font-weight: 700;
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            display: block;
+        }
+
+         .summary-value.small { /* Ukuran lebih kecil untuk teks Ya/Tidak */
+            font-size: 1.5rem;
+         }
+
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Hasil Evaluasi Risiko</h1>
-    <p><strong>Umur:</strong> {{ umur }} tahun &nbsp;|&nbsp; <strong>Gender:</strong> {{ gender }}</p>
-    <p><strong>BMI:</strong> {{ '%.2f' % bmi }}</p>
-    <p><strong>Target Jogging:</strong> {{ target }} m</p>
-    <p><strong>Tingkat Parah:</strong> {{ tingkat_parah }}</p>
-    <p><strong>Abnormal HR setelah jogging:</strong> {{ 'Ya' if abnormal_hr else 'Tidak' }}</p>
+    <div class="container">
+        <h1>Hasil Evaluasi Risiko</h1>
 
-    <h2 class="mt-6">Persentase Risiko (terurut):</h2>
-    {% if hasil %}
-      {% for penyakit, persen in hasil %}
-        <div class="result-item">
-          <strong>{{ penyakit.replace('_', ' ').title() }}:</strong> {{ persen }}%
+        <div class="summary-grid">
+            <div class="summary-card">
+                <i class="fas fa-user"></i> {# Ikon Pengguna #}
+                <span class="summary-label">Umur & Gender</span>
+                <span class="summary-value">{{ umur }} th | {{ gender.title() }}</span>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-weight-scale"></i> {# Ikon Timbangan #}
+                <span class="summary-label">BMI</span>
+                <span class="summary-value">{{ '%.2f' % bmi }}</span>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-bullseye"></i> {# Ikon Target #}
+                <span class="summary-label">Target Jogging</span>
+                <span class="summary-value">{{ target }} m</span>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-triangle-exclamation"></i> {# Ikon Peringatan #}
+                <span class="summary-label">Tingkat Resiko</span>
+                <span class="summary-value">{{ tingkat_parah }}</span>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-heart-pulse"></i> {# Ikon Detak Jantung #}
+                <span class="summary-label">Abnormal HR</span>
+                <span class="summary-value small">{{ 'Ya' if abnormal_hr else 'Tidak' }}</span>
+            </div>
         </div>
-      {% endfor %}
-    {% else %}
-      <p>Tidak ada data risiko yang tersedia.</p>
-    {% endif %}
+        <h2 class="mt-6">Persentase Risiko (terurut):</h2>
+        {% if hasil %}
+            {% for penyakit, persen in hasil %}
+                {% set circumference = 2 * 3.14159 * 34 %}
+                {% set offset = circumference - (persen / 100 * circumference) %}
+                {% set index = loop.index0 %}
+                {% set descriptions = {
+                    'Penyakit_Jantung_Koroner': 'Penyempitan pembuluh darah jantung akibat plak.',
+                    'Stroke': 'Gangguan suplai darah ke otak, menyebabkan kerusakan sel otak.',
+                    'Gagal_Jantung': 'Kondisi jantung tidak dapat memompa darah secara efisien.',
+                    'Aritmia': 'Detak jantung yang tidak teratur, terlalu cepat, atau terlalu lambat.',
+                    'Hipertensi': 'Tekanan darah tinggi yang persisten di arteri.',
+                    'Lainnya': 'Risiko kardiovaskular lainnya yang teridentifikasi.'
+                } %}
+                {% set description = descriptions.get(penyakit, 'Deskripsi untuk penyakit ini belum tersedia.') %}
 
-    <div class="mt-6">
-      <a href="/" style="color:#3d5a80; text-decoration:none;">← Kembali ke Form</a>
+                <div class="result-item" style="--index: {{ index }};">
+                    <div class="disease-info">
+                        <div class="disease-title">{{ penyakit.replace('_', ' ').title() }}</div>
+                        <p class="disease-description">{{ description }}</p>
+                    </div>
+                    <div class="percentage-chart">
+                        <svg class="percentage-svg" viewBox="0 0 80 80">
+                            <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+                            <circle class="circle-progress" cx="40" cy="40" r="34"
+                                    stroke-dasharray="213.6"
+                                    style="--offset: {{ offset }};">
+                            </circle>
+                        </svg>
+                        <div class="percentage-text">{{ persen }}%</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Tidak ada data risiko yang tersedia.</p>
+        {% endif %}
+
+        <div class="mt-6">
+            <a href="/">← Kembali ke Form</a>
+        </div>
     </div>
-  </div>
 </body>
 </html>
