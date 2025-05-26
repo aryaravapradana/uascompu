@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from logic.logic import (
-    get_target_distance, evaluate_performance, calculate_bmi,
-    evaluate_numeric_risk, evaluate_total_risk
+    targetjarak, selisihjarak, bminormal,
+    hitungresiko, totalresiko
 )
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def index():
     if request.method == 'POST':
         umur = int(request.form.get('umur'))
         gender = request.form.get('gender')
-        target = get_target_distance(umur, gender)
+        target = targetjarak(umur, gender)
     return render_template('index.html', target=target)
 
 
@@ -33,12 +33,12 @@ def result():
     hr_jog = float(request.form.get('hr_jog') or 0)
 
     # Hitung BMI dan target jogging
-    bmi = calculate_bmi(berat, tinggi)
-    target = get_target_distance(umur, gender)
+    bmi = bminormal(berat, tinggi)
+    target = targetjarak(umur, gender)
 
     # Hitung tingkat parah & HR abnormal
     if jog_yes == 'tidak':
-        tingkat_parah = evaluate_performance(target, jarak_tempuh, umur)
+        tingkat_parah = selisihjarak(target, jarak_tempuh, umur)
         abnormal_hr = False
     else:
         abnormal_hr = hr_jog > 170
@@ -55,8 +55,8 @@ def result():
     yt_answers = {key: (key in request.form) for key in pertanyaan_keys}
 
     # Hitung risiko numerik & total
-    numeric_risk = evaluate_numeric_risk(umur, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, exercise_freq)
-    hasil = evaluate_total_risk(tingkat_parah, abnormal_hr, yt_answers, numeric_risk)
+    numeric_risk = hitungresiko(umur, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, exercise_freq)
+    hasil = totalresiko(tingkat_parah, abnormal_hr, yt_answers, numeric_risk)
     hasil_terurut = sorted(hasil.items(), key=lambda x: x[1], reverse=True)
 
     return render_template(
