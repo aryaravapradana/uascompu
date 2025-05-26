@@ -1,4 +1,4 @@
-def get_target_distance(age, gender):
+def targetjarak(age, gender):
     if gender == 'pria':
         if age < 25: return 1600
         elif age < 35: return 1500
@@ -14,7 +14,7 @@ def get_target_distance(age, gender):
         elif age < 65: return 800
         else: return 650
 
-def evaluate_performance(target, actual, age):
+def selisihjarak(target, actual, age):
     selisih = target - actual
     if age >= 60:
         if selisih > 400: return 4
@@ -27,11 +27,11 @@ def evaluate_performance(target, actual, age):
         elif selisih > 200: return 2
         else: return 1
 
-def calculate_bmi(weight, height_cm):
+def bminormal(weight, height_cm):
     height_m = height_cm / 100
     return weight / (height_m ** 2)
 
-def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, exercise_freq):
+def hitungresiko(age, gender, bmi, detakbiasa, detakjalan, sistolik, diastolik, olahraga_minggu):
     risk = {
         "aritmia": 0,
         "gagal jantung": 0,
@@ -43,48 +43,48 @@ def evaluate_numeric_risk(age, gender, bmi, hr_rest, hr_walk, bp_sys, bp_dia, ex
         "stroke": 0,
         "cardiac arrest": 0
     }
-    if hr_rest > 100:
+    if detakbiasa > 100:
         risk["aritmia"] += 15
         risk["fibrilasi atrium"] += 10
-    if hr_walk > 120:
+    if detakjalan > 120:
         risk["gagal jantung"] += 10
     if bmi >= 30:
         risk["gagal jantung"] += 10
         risk["penyakit arteri perifer"] += 10
         risk["penyakit jantung koroner"] += 2
         risk["stroke"] += 10
-    if bp_sys >= 140 or bp_dia >= 90:
+    if sistolik >= 140 or diastolik >= 90:
         risk["hipertensi pulmonal"] += 15
         risk["serangan jantung"] += 10
-    if exercise_freq < 1:
+    if olahraga_minggu < 1:
         risk["penyakit arteri perifer"] += 10
         risk["penyakit jantung koroner"] += 5
     return risk
 
-def evaluate_total_risk(tingkat_parah, abnormal_hr, ya_tidak_answers, numeric_risk):
+def totalresiko(tingkatresiko, detakabnormal, jawaban, persentaseresiko):
     base_risk = {
-        "aritmia": 5 + tingkat_parah * 3,
-        "kardiomiopati": 5 + tingkat_parah * 3,
-        "penyakit jantung koroner": 5 + tingkat_parah * 3,
-        "gagal jantung": 5 + tingkat_parah * 3,
-        "serangan jantung": 5 + tingkat_parah * 3,
-        "hipertensi pulmonal": 5 + tingkat_parah * 3,
-        "penyakit katup jantung": 5 + tingkat_parah * 3,
-        "endokarditis": 5 + tingkat_parah * 3,
-        "perikarditis": 5 + tingkat_parah * 3,
-        "penyakit arteri perifer": 5 + tingkat_parah * 3,
-        "fibrilasi atrium": 5 + tingkat_parah * 3,
-        "blok jantung": 5 + tingkat_parah * 3,
-        "stroke": 5 + tingkat_parah * 3,
-        "cardiac arrest": 5 + tingkat_parah * 3,
-        "aterosklerosis": 5 + tingkat_parah * 3
+        "aritmia": 5 + tingkatresiko * 3,
+        "kardiomiopati": 5 + tingkatresiko * 3,
+        "penyakit jantung koroner": 5 + tingkatresiko * 3,
+        "gagal jantung": 5 + tingkatresiko * 3,
+        "serangan jantung": 5 + tingkatresiko * 3,
+        "hipertensi pulmonal": 5 + tingkatresiko * 3,
+        "penyakit katup jantung": 5 + tingkatresiko * 3,
+        "endokarditis": 5 + tingkatresiko * 3,
+        "perikarditis": 5 + tingkatresiko * 3,
+        "penyakit arteri perifer": 5 + tingkatresiko * 3,
+        "fibrilasi atrium": 5 + tingkatresiko * 3,
+        "blok jantung": 5 + tingkatresiko * 3,
+        "stroke": 5 + tingkatresiko * 3,
+        "cardiac arrest": 5 + tingkatresiko * 3,
+        "aterosklerosis": 5 + tingkatresiko * 3
     }
 
-    if abnormal_hr:
+    if detakabnormal:
         base_risk["aritmia"] += 10
         base_risk["gagal jantung"] += 5
 
-    pertanyaan_penyakit = {
+    pertanyaan = {
         "riwayat_keluarga": ["penyakit jantung koroner", "serangan jantung", "fibrilasi atrium", "cardiac arrest", "aterosklerosis"],
         "nyeri_dada": ["penyakit jantung koroner", "serangan jantung"],
         "sesak_napas": ["gagal jantung", "hipertensi pulmonal"],
@@ -111,16 +111,16 @@ def evaluate_total_risk(tingkat_parah, abnormal_hr, ya_tidak_answers, numeric_ri
         "tinggi_gula": ["kardiomiopati"]
     }
 
-    for key, penyakit_list in pertanyaan_penyakit.items():
-        if ya_tidak_answers.get(key, False):
-            for p in penyakit_list:
+    for key, listpenyakit in pertanyaan.items():
+        if jawaban.get(key, False):
+            for p in listpenyakit:
                 base_risk[p] += 5
 
-    for k, v in numeric_risk.items():
-        if k in base_risk:
-            base_risk[k] += v
+    for gejalapenyakit, namapenyakit in persentaseresiko.items():
+        if gejalapenyakit in base_risk:
+            base_risk[gejalapenyakit] += namapenyakit
 
-    for k in base_risk:
-        base_risk[k] = min(base_risk[k], 100)
+    for gejalapenyakit in base_risk:
+        base_risk[gejalapenyakit] = min(base_risk[gejalapenyakit], 100)
 
     return base_risk
