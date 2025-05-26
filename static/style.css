@@ -36,11 +36,11 @@ body {
   background: #0a0a0a;
   padding: 20px 30px;
   border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 255, 220, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 .container:hover {
-  box-shadow: 0 0 30px rgba(0, 255, 220, 0.4);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
   transform: translateY(-4px);
 }
 
