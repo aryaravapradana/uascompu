@@ -269,6 +269,8 @@ button[type="submit"]:hover::before { left: 0; }
 }
 .risk-grid .result-item:hover .percentage-svg { filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2)); }
 
+
+
 /* === Link Kembali (Tidak Diubah) === */
 .mt-6 { margin-top: 60px; text-align: center; }
 .mt-6 a {
@@ -297,3 +299,74 @@ input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-o
     -webkit-appearance: none; margin: 0;
 }
 input[type="number"] { -moz-appearance: textfield; }
+
+/* === Warning Vibe Animation (FIXED) === */
+
+/* Definisikan Animasi Denyut Merah (Tetap Sama) */
+@keyframes pulseRedGlow {
+  0% {
+    border-color: rgba(255, 77, 77, 0.6);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04), 
+                0 0 10px rgba(255, 77, 77, 0.4);
+  }
+  50% {
+    border-color: rgba(255, 77, 77, 1);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04), 
+                0 0 25px rgba(255, 77, 77, 0.9);
+  }
+  100% {
+    border-color: rgba(255, 77, 77, 0.6);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04), 
+                0 0 10px rgba(255, 77, 77, 0.4);
+  }
+}
+
+/* Pastikan .result-item dasar Anda MASIH memiliki animasi popIn asli. 
+  Contohnya seperti ini (JANGAN UBAH JIKA SUDAH BENAR):
+*/
+.risk-grid .result-item {
+    /* ... (gaya-gaya Anda yang lain) ... */
+    animation: popIn 0.6s forwards ease-out; /* <-- INI PENTING */
+    animation-delay: calc(0.08s * var(--index)); /* <-- INI PENTING */
+    /* ... (gaya-gaya Anda yang lain) ... */
+}
+
+
+/* Gaya untuk card berisiko tinggi: 
+  Terapkan KEDUA animasi dengan delay yang sesuai.
+*/
+.risk-grid .result-item.risk-high {
+  /* Tentukan NAMA animasi (popIn dulu, baru pulseRedGlow) */
+  animation-name: popIn, pulseRedGlow;
+  
+  /* Tentukan DURASI untuk masing-masing */
+  animation-duration: 0.6s, 2s;
+
+  /* Tentukan PENGISIAN AKHIR (hanya untuk popIn) & PERULANGAN (hanya untuk pulse) */
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+
+  /* Tentukan FUNGSI WAKTU untuk masing-masing */
+  animation-timing-function: ease-out, ease-in-out;
+
+  /* Tentukan DELAY untuk masing-masing */
+  /* popIn delay: seperti biasa */
+  /* pulseRedGlow delay: delay popIn + durasi popIn + sedikit jeda (misal 0.1s) */
+  animation-delay: calc(0.08s * var(--index)), 
+                   calc(0.08s * var(--index) + 0.7s);
+
+  /* Atur border dasar agar terlihat merah saat animasi berjalan */
+  border-color: #ff4d4d;
+}
+
+/* Gaya hover untuk card berisiko tinggi:
+  Kita HANYA perlu override border & shadow. 
+  Animasi pulse akan terus berjalan, tapi secara visual akan tertutup oleh 
+  efek hover putih yang lebih kuat, jadi tidak perlu `animation: none;`.
+*/
+.risk-grid .result-item.risk-high:hover {
+  border-color: var(--text-color); /* Kembali ke border putih saat hover */
+  box-shadow: 0 0 25px var(--text-color), 0 0 40px var(--hover-glow); /* Shadow putih */
+  /* Hapus 'animation: none;' agar popIn 'forwards' tidak hilang */
+}
+

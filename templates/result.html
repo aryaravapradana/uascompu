@@ -68,7 +68,7 @@
                     {# --- Pencarian menggunakan kunci 'penyakit' yang sekarang DIASUMSIKAN huruf kecil & spasi --- #}
                     {% set current_disease_info = disease_details.get(penyakit, {'desc': 'Info belum tersedia.', 'icon': 'fas fa-info-circle'}) %}
 
-                    <div class="result-item" style="--index: {{ index }};">
+                    <div class="result-item {% if persen > 20 %}risk-high{% endif %}" style="--index: {{ index }};">
                         <div class="disease-info">
                             {# --- Menampilkan judul dengan .title() agar kapital di awal kata --- #}
                             <div class="disease-title">{{ penyakit.title() }}</div>
