@@ -2,63 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Hasil Evaluasi</title>
+    <title>Hasil Evaluasi Risiko</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* CSS untuk Summary Grid (Bisa dipindah ke style.css) */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Grid responsif */
-            gap: 25px; /* Jarak antar kartu */
-            margin-bottom: 60px; /* Jarak ke bagian risiko */
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 40px;
-        }
-
-        .summary-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.08);
-        }
-
-        .summary-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
-        }
-
-        .summary-card i { /* Style untuk Ikon Font Awesome */
-            font-size: 2.5rem;
-            color: var(--text-color);
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px var(--hover-glow);
-            display: block;
-        }
-
-        .summary-label {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .summary-value {
-            font-size: 1.8rem; /* Ukuran nilai lebih besar */
-            font-weight: 700;
-            color: var(--text-color);
-            font-family: 'Space Grotesk', sans-serif;
-            display: block;
-        }
-
-         .summary-value.small { /* Ukuran lebih kecil untuk teks Ya/Tidak */
-            font-size: 1.5rem;
-         }
-
-    </style>
 </head>
 <body>
     <div class="container">
@@ -66,67 +12,95 @@
 
         <div class="summary-grid">
             <div class="summary-card">
-                <i class="fas fa-user"></i> {# Ikon Pengguna #}
+                <i class="fas fa-user"></i>
                 <span class="summary-label">Umur & Gender</span>
                 <span class="summary-value">{{ umur }} th | {{ gender.title() }}</span>
             </div>
             <div class="summary-card">
-                <i class="fas fa-weight-scale"></i> {# Ikon Timbangan #}
+                <i class="fas fa-weight-scale"></i>
                 <span class="summary-label">BMI</span>
                 <span class="summary-value">{{ '%.2f' % bmi }}</span>
             </div>
             <div class="summary-card">
-                <i class="fas fa-bullseye"></i> {# Ikon Target #}
+                <i class="fas fa-bullseye"></i>
                 <span class="summary-label">Target Jogging</span>
                 <span class="summary-value">{{ target }} m</span>
             </div>
             <div class="summary-card">
-                <i class="fas fa-triangle-exclamation"></i> {# Ikon Peringatan #}
-                <span class="summary-label">Tingkat Resiko</span>
+                <i class="fas fa-triangle-exclamation"></i>
+                <span class="summary-label">Tingkat Parah</span>
                 <span class="summary-value">{{ tingkat_parah }}</span>
             </div>
             <div class="summary-card">
-                <i class="fas fa-heart-pulse"></i> {# Ikon Detak Jantung #}
+                <i class="fas fa-heart-pulse"></i>
                 <span class="summary-label">Abnormal HR</span>
                 <span class="summary-value small">{{ 'Ya' if abnormal_hr else 'Tidak' }}</span>
             </div>
         </div>
-        <h2 class="mt-6">Persentase Risiko (terurut):</h2>
-        {% if hasil %}
-            {% for penyakit, persen in hasil %}
-                {% set circumference = 2 * 3.14159 * 34 %}
-                {% set offset = circumference - (persen / 100 * circumference) %}
-                {% set index = loop.index0 %}
-                {% set descriptions = {
-                    'Penyakit_Jantung_Koroner': 'Penyempitan pembuluh darah jantung akibat plak.',
-                    'Stroke': 'Gangguan suplai darah ke otak, menyebabkan kerusakan sel otak.',
-                    'Gagal_Jantung': 'Kondisi jantung tidak dapat memompa darah secara efisien.',
-                    'Aritmia': 'Detak jantung yang tidak teratur, terlalu cepat, atau terlalu lambat.',
-                    'Hipertensi': 'Tekanan darah tinggi yang persisten di arteri.',
-                    'Lainnya': 'Risiko kardiovaskular lainnya yang teridentifikasi.'
-                } %}
-                {% set description = descriptions.get(penyakit, 'Deskripsi untuk penyakit ini belum tersedia.') %}
 
-                <div class="result-item" style="--index: {{ index }};">
-                    <div class="disease-info">
-                        <div class="disease-title">{{ penyakit.replace('_', ' ').title() }}</div>
-                        <p class="disease-description">{{ description }}</p>
-                    </div>
-                    <div class="percentage-chart">
-                        <svg class="percentage-svg" viewBox="0 0 80 80">
-                            <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
-                            <circle class="circle-progress" cx="40" cy="40" r="34"
-                                    stroke-dasharray="213.6"
-                                    style="--offset: {{ offset }};">
-                            </circle>
-                        </svg>
-                        <div class="percentage-text">{{ persen }}%</div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>Tidak ada data risiko yang tersedia.</p>
-        {% endif %}
+        <h2 class="mt-6">Persentase Risiko:</h2>
+
+        <div class="risk-grid">
+            {% if hasil %}
+                {% for penyakit, persen in hasil %}
+                    {# Pengaturan untuk Chart Lingkaran & Animasi #}
+                    {% set circumference = 2 * 3.14159 * 34 %}
+                    {% set offset = circumference - (persen / 100 * circumference) %}
+                    {% set index = loop.index0 %}
+
+                    {# --- KAMUS DESKRIPSI & URL PENYAKIT --- #}
+                    {% set disease_details = {
+                        'aritmia': {'desc': 'Irama jantung tidak normal (cepat, lambat, atau tak teratur).', 'url': 'https://id.wikipedia.org/wiki/Aritmia'},
+                        'kardiomiopati': {'desc': 'Penyakit otot jantung yang lemahkan kemampuan memompa.', 'url': 'https://id.wikipedia.org/wiki/Kardiomiopati'},
+                        'penyakit jantung koroner': {'desc': 'Penyempitan arteri koroner kurangi aliran darah jantung.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_jantung_koroner'},
+                        'gagal jantung': {'desc': 'Jantung tidak mampu memompa darah secara efektif.', 'url': 'https://id.wikipedia.org/wiki/Gagal_jantung'},
+                        'serangan jantung': {'desc': 'Kerusakan otot jantung akibat aliran darah terhenti.', 'url': 'https://id.wikipedia.org/wiki/Serangan_jantung'},
+                        'hipertensi pulmonal': {'desc': 'Tekanan darah tinggi pada arteri paru-paru.', 'url': 'https://www.siloamhospitals.com/en/informasi-siloam/artikel/what-is-pulmonary-hypertension'},
+                        'endokarditis': {'desc': 'Infeksi pada lapisan dalam dan katup jantung.', 'url': 'https://id.wikipedia.org/wiki/Endokarditis'},
+                        'perikarditis': {'desc': 'Peradangan pada kantung pelapis jantung (perikardium).', 'url': 'https://id.wikipedia.org/wiki/Perikarditis'},
+                        'penyakit arteri perifer': {'desc': 'Penyempitan arteri yang kurangi aliran darah ke tungkai.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_arteri_perifer'},
+                        'fibrilasi atrium': {'desc': 'Detak serambi jantung cepat & tidak teratur.', 'url': 'https://id.wikipedia.org/wiki/Fibrilasi_atrium'},
+                        'blok jantung': {'desc': 'Gangguan sinyal listrik yang perlambat detak jantung.', 'url': 'https://simple.m.wikipedia.org/wiki/Heart_block'},
+                        'stroke': {'desc': 'Gangguan suplai darah ke otak sebabkan kerusakan sel.', 'url': 'https://id.wikipedia.org/wiki/Stroke'},
+                        'cardiac arrest': {'desc': 'Henti jantung mendadak akibat gangguan listrik fatal.', 'url': 'https://id.wikipedia.org/wiki/Henti_jantung'},
+                        'aterosklerosis': {'desc': 'Pengerasan & penyempitan arteri akibat penumpukan plak.', 'url': 'https://id.wikipedia.org/wiki/Aterosklerosis'},
+                        'penyakit katup jantung': {'desc': 'Gangguan pada katup jantung yang mengatur aliran darah.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_katup_jantung'},
+                        'lainnya': {'desc': 'Faktor risiko kesehatan lain yang perlu diwaspadai.', 'url': 'https://id.wikipedia.org/wiki/Penyakit'}
+                    } %}
+                    {# Pengambilan data & URL, dengan fallback #}
+                    {% set current_disease_info = disease_details.get(penyakit, {'desc': 'Info belum tersedia.', 'url': '#'}) %}
+                    {% set wiki_url = current_disease_info.get('url') %}
+
+                    {# --- Struktur Card Penyakit --- #}
+                    <div class="result-item {% if persen > 20 %}risk-high{% endif %}" style="--index: {{ index }};">
+                        
+                        <div class="disease-info">
+                            <div class="disease-title">{{ penyakit.title() }}</div>
+                            <p class="disease-description">{{ current_disease_info.desc }}</p>
+                        </div>
+
+                        <div class="percentage-chart">
+                            <svg class="percentage-svg" viewBox="0 0 80 80">
+                                <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
+                                <circle class="circle-progress" cx="40" cy="40" r="34"
+                                        stroke-dasharray="{{ circumference }}"
+                                        style="--offset: {{ offset }};">
+                                </circle>
+                            </svg>
+                            <div class="percentage-text">{{ persen }}%</div>
+                        </div>
+
+                        {# --- Tombol Wikipedia Internal --- #}
+                        <a href="{{ wiki_url }}" class="wiki-button" target="_blank" rel="noopener noreferrer">
+                            Info Lebih Lanjut <i class="fas fa-external-link-alt fa-xs"></i>
+                        </a>
+
+                    </div> 
+                {% endfor %}
+            {% else %}
+                <p>Tidak ada data risiko yang tersedia.</p>
+            {% endif %}
+        </div>
 
         <div class="mt-6">
             <a href="/">← Kembali ke Form</a>
