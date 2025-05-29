@@ -370,3 +370,54 @@ input[type="number"] { -moz-appearance: textfield; }
   /* Hapus 'animation: none;' agar popIn 'forwards' tidak hilang */
 }
 
+/* === Wikipedia Button Styling (BARU) === */
+.wiki-button {
+    display: inline-block;
+    padding: 0.5em 1.2em;
+    margin-top: 1.2em; /* Jarak dari chart */
+    border: 1px solid var(--border-color);
+    border-radius: 30px; /* Bikin oval */
+    color: var(--text-muted);
+    font-size: 0.7em; /* Ukuran font lebih kecil */
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    opacity: 0; /* Sembunyikan defaultnya */
+    transform: translateY(15px); /* Posisi awal sedikit ke bawah */
+    pointer-events: none; /* Belum bisa diklik */
+    background-color: transparent;
+    z-index: 5; /* Pastikan di atas ikon BG jika ada */
+    position: relative; /* Agar z-index bekerja baik */
+}
+
+.wiki-button i {
+    margin-left: 0.5em;
+}
+
+/* Munculkan tombol saat card di-hover */
+.risk-grid .result-item:hover .wiki-button {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Bisa diklik sekarang */
+}
+
+/* Efek hover untuk tombol itu sendiri */
+.wiki-button:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+    box-shadow: 0 0 15px var(--hover-glow);
+}
+
+/* Pastikan tombol juga ikut invert warnanya saat di-hover (jika belum di-hover langsung) */
+.risk-grid .result-item:hover .wiki-button {
+  color: var(--text-hover-invert); /* Saat card hover, tombol jadi gelap */
+  border-color: var(--text-hover-invert);
+}
+
+/* Tapi saat tombolnya sendiri di-hover, dia jadi terang (override) */
+.risk-grid .result-item:hover .wiki-button:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}

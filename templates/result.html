@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Hasil Evaluasi</title>
+    <title>Hasil Evaluasi Risiko</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -43,38 +43,42 @@
         <div class="risk-grid">
             {% if hasil %}
                 {% for penyakit, persen in hasil %}
+                    {# Pengaturan untuk Chart Lingkaran & Animasi #}
                     {% set circumference = 2 * 3.14159 * 34 %}
                     {% set offset = circumference - (persen / 100 * circumference) %}
                     {% set index = loop.index0 %}
 
-                    {# --- KAMUS DESKRIPSI PENYAKIT (KUNCI HURUF KECIL & SPASI) --- #}
+                    {# --- KAMUS DESKRIPSI & URL PENYAKIT --- #}
                     {% set disease_details = {
-                        'aritmia': {'desc': 'Irama jantung tidak normal (cepat, lambat, atau tak teratur).', 'icon': 'fas fa-wave-square'},
-                        'kardiomiopati': {'desc': 'Penyakit otot jantung yang lemahkan kemampuan memompa.', 'icon': 'fas fa-heart-pulse'},
-                        'penyakit jantung koroner': {'desc': 'Penyempitan arteri koroner kurangi aliran darah jantung.', 'icon': 'fas fa-heart-crack'},
-                        'gagal jantung': {'desc': 'Jantung tidak mampu memompa darah secara efektif.', 'icon': 'fas fa-shield-heart'},
-                        'serangan jantung': {'desc': 'Kerusakan otot jantung akibat aliran darah terhenti.', 'icon': 'fas fa-bolt'},
-                        'hipertensi pulmonal': {'desc': 'Tekanan darah tinggi pada arteri paru-paru.', 'icon': 'fas fa-lungs'},
-                        'penyakit katup jantung': {'desc': 'Satu atau lebih katup jantung tidak berfungsi dengan baik, menyebabkan gangguan aliran darah.', 'icon': 'fas fa-lungs'},
-                        'endokarditis': {'desc': 'Infeksi pada lapisan dalam dan katup jantung.', 'icon': 'fas fa-bacterium'},
-                        'perikarditis': {'desc': 'Peradangan pada kantung pelapis jantung (perikardium).', 'icon': 'fas fa-shield-virus'},
-                        'penyakit arteri perifer': {'desc': 'Penyempitan arteri yang kurangi aliran darah ke tungkai.', 'icon': 'fas fa-person-walking'},
-                        'fibrilasi atrium': {'desc': 'Detak serambi jantung cepat & tidak teratur.', 'icon': 'fas fa-arrows-spin'},
-                        'blok jantung': {'desc': 'Gangguan sinyal listrik yang perlambat detak jantung.', 'icon': 'fas fa-ban'},
-                        'stroke': {'desc': 'Gangguan suplai darah ke otak sebabkan kerusakan sel.', 'icon': 'fas fa-brain'},
-                        'cardiac arrest': {'desc': 'Henti jantung mendadak akibat gangguan listrik fatal.', 'icon': 'fas fa-plug-circle-xmark'},
-                        'aterosklerosis': {'desc': 'Pengerasan & penyempitan arteri akibat penumpukan plak.', 'icon': 'fas fa-road-barrier'},
-                        'lainnya': {'desc': 'Faktor risiko kesehatan lain yang perlu diwaspadai.', 'icon': 'fas fa-question-circle'}
+                        'aritmia': {'desc': 'Irama jantung tidak normal (cepat, lambat, atau tak teratur).', 'url': 'https://id.wikipedia.org/wiki/Aritmia'},
+                        'kardiomiopati': {'desc': 'Penyakit otot jantung yang lemahkan kemampuan memompa.', 'url': 'https://id.wikipedia.org/wiki/Kardiomiopati'},
+                        'penyakit jantung koroner': {'desc': 'Penyempitan arteri koroner kurangi aliran darah jantung.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_jantung_koroner'},
+                        'gagal jantung': {'desc': 'Jantung tidak mampu memompa darah secara efektif.', 'url': 'https://id.wikipedia.org/wiki/Gagal_jantung'},
+                        'serangan jantung': {'desc': 'Kerusakan otot jantung akibat aliran darah terhenti.', 'url': 'https://id.wikipedia.org/wiki/Serangan_jantung'},
+                        'hipertensi pulmonal': {'desc': 'Tekanan darah tinggi pada arteri paru-paru.', 'url': 'https://www.siloamhospitals.com/en/informasi-siloam/artikel/what-is-pulmonary-hypertension'},
+                        'endokarditis': {'desc': 'Infeksi pada lapisan dalam dan katup jantung.', 'url': 'https://id.wikipedia.org/wiki/Endokarditis'},
+                        'perikarditis': {'desc': 'Peradangan pada kantung pelapis jantung (perikardium).', 'url': 'https://id.wikipedia.org/wiki/Perikarditis'},
+                        'penyakit arteri perifer': {'desc': 'Penyempitan arteri yang kurangi aliran darah ke tungkai.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_arteri_perifer'},
+                        'fibrilasi atrium': {'desc': 'Detak serambi jantung cepat & tidak teratur.', 'url': 'https://id.wikipedia.org/wiki/Fibrilasi_atrium'},
+                        'blok jantung': {'desc': 'Gangguan sinyal listrik yang perlambat detak jantung.', 'url': 'https://simple.m.wikipedia.org/wiki/Heart_block'},
+                        'stroke': {'desc': 'Gangguan suplai darah ke otak sebabkan kerusakan sel.', 'url': 'https://id.wikipedia.org/wiki/Stroke'},
+                        'cardiac arrest': {'desc': 'Henti jantung mendadak akibat gangguan listrik fatal.', 'url': 'https://id.wikipedia.org/wiki/Henti_jantung'},
+                        'aterosklerosis': {'desc': 'Pengerasan & penyempitan arteri akibat penumpukan plak.', 'url': 'https://id.wikipedia.org/wiki/Aterosklerosis'},
+                        'penyakit katup jantung': {'desc': 'Gangguan pada katup jantung yang mengatur aliran darah.', 'url': 'https://id.wikipedia.org/wiki/Penyakit_katup_jantung'},
+                        'lainnya': {'desc': 'Faktor risiko kesehatan lain yang perlu diwaspadai.', 'url': 'https://id.wikipedia.org/wiki/Penyakit'}
                     } %}
-                    {# --- Pencarian menggunakan kunci 'penyakit' yang sekarang DIASUMSIKAN huruf kecil & spasi --- #}
-                    {% set current_disease_info = disease_details.get(penyakit, {'desc': 'Info belum tersedia.', 'icon': 'fas fa-info-circle'}) %}
+                    {# Pengambilan data & URL, dengan fallback #}
+                    {% set current_disease_info = disease_details.get(penyakit, {'desc': 'Info belum tersedia.', 'url': '#'}) %}
+                    {% set wiki_url = current_disease_info.get('url') %}
 
+                    {# --- Struktur Card Penyakit --- #}
                     <div class="result-item {% if persen > 20 %}risk-high{% endif %}" style="--index: {{ index }};">
+                        
                         <div class="disease-info">
-                            {# --- Menampilkan judul dengan .title() agar kapital di awal kata --- #}
                             <div class="disease-title">{{ penyakit.title() }}</div>
                             <p class="disease-description">{{ current_disease_info.desc }}</p>
                         </div>
+
                         <div class="percentage-chart">
                             <svg class="percentage-svg" viewBox="0 0 80 80">
                                 <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
@@ -85,7 +89,13 @@
                             </svg>
                             <div class="percentage-text">{{ persen }}%</div>
                         </div>
-                    </div>
+
+                        {# --- Tombol Wikipedia Internal --- #}
+                        <a href="{{ wiki_url }}" class="wiki-button" target="_blank" rel="noopener noreferrer">
+                            Info Lebih Lanjut <i class="fas fa-external-link-alt fa-xs"></i>
+                        </a>
+
+                    </div> 
                 {% endfor %}
             {% else %}
                 <p>Tidak ada data risiko yang tersedia.</p>
