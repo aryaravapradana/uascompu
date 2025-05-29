@@ -11,6 +11,9 @@
     --hover-glow: rgba(255, 255, 255, 0.6);
     --focus-glow: #ffffff;
     --card-bg: rgba(255, 255, 255, 0.04);
+    --text-hover-invert: #000000; /* Warna teks utama saat invert */
+    --text-muted-hover-invert: #333333; /* Warna teks muted saat invert */
+    --circle-hover-stroke: #222222; /* Warna stroke progress saat hover */
 }
 
 /* === Base Styles === */
@@ -20,21 +23,21 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    line-height: 1.8; /* More line height for readability */
-    padding: 30px; /* More base padding */
+    line-height: 1.8;
+    padding: 30px;
     overflow-x: hidden;
-    font-size: 20px; /* INCREASED BASE FONT SIZE FOR DESKTOP */
+    font-size: 20px;
 }
 
 .container {
-    width: 90%; /* Ambil 90% lebar layar */
-    max-width: 1600px; /* Tapi jangan lebih lebar dari 1600px */
-    margin: 50px auto; /* More margin */
+    width: 90%;
+    max-width: 1600px;
+    margin: 50px auto;
     background: var(--bg-color);
-    padding: 50px 60px; /* INCREASED Padding */
-    border-radius: 16px; /* More rounded */
+    padding: 50px 60px;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); /* Enhanced shadow */
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 1s forwards ease-out;
@@ -44,214 +47,253 @@ h1, h2 {
     font-family: 'Space Grotesk', sans-serif;
     color: var(--text-color);
     text-align: center;
-    margin-bottom: 50px; /* INCREASED */
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); /* Enhanced glow */
+    margin-bottom: 50px;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
     font-weight: 700;
-    letter-spacing: 2px; /* INCREASED */
+    letter-spacing: 2px;
     opacity: 0;
     transform: translateY(-20px);
     animation: fadeInDown 0.8s forwards ease-out 0.3s;
 }
-h1 { font-size: 3.2rem; margin-bottom: 60px; } /* INCREASED */
-h2 { font-size: 2.4rem; margin-top: 70px; } /* INCREASED */
-p { margin-bottom: 18px; font-size: 1.15rem; } /* INCREASED */
+h1 { font-size: 3.2rem; margin-bottom: 60px; }
+h2 { font-size: 2.4rem; margin-top: 70px; }
+p { margin-bottom: 18px; font-size: 1.15rem; }
 
 /* === Form Styles === */
+/* === TIDAK ADA PERUBAHAN DI SINI === */
 form { margin-bottom: 60px; }
 fieldset {
-    border: 1px dashed var(--border-color);
-    padding: 40px; /* INCREASED */
-    border-radius: 12px; /* More rounded */
-    margin-bottom: 40px; /* INCREASED */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border: 1px dashed var(--border-color); padding: 40px; border-radius: 12px;
+    margin-bottom: 40px; transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 fieldset:hover { border-color: var(--focus-glow); box-shadow: 0 0 25px rgba(255, 255, 255, 0.3); }
 legend {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 500;
-    color: var(--text-color);
-    padding: 0 25px; /* INCREASED */
-    font-size: 1.6rem; /* INCREASED */
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    font-family: 'Space Grotesk', sans-serif; font-weight: 500; color: var(--text-color);
+    padding: 0 25px; font-size: 1.6rem; text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
-label { display: block; margin-bottom: 30px; color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s ease; } /* INCREASED */
-
+label { display: block; margin-bottom: 30px; color: var(--text-muted); font-size: 1.1rem; transition: color 0.3s ease; }
 input[type="number"], select {
-    width: 100%;
-    padding: 16px 8px; /* INCREASED */
-    border: none;
-    border-bottom: 2px solid var(--border-color);
-    background: transparent;
-    color: var(--text-color);
-    font-size: 1.2rem; /* INCREASED */
-    font-family: 'Poppins', sans-serif;
-    transition: border-bottom 0.3s ease, box-shadow 0.3s ease;
-    outline: none;
-    margin-top: 10px; /* INCREASED */
+    width: 100%; padding: 16px 8px; border: none; border-bottom: 2px solid var(--border-color);
+    background: transparent; color: var(--text-color); font-size: 1.2rem;
+    font-family: 'Poppins', sans-serif; transition: border-bottom 0.3s ease, box-shadow 0.3s ease;
+    outline: none; margin-top: 10px;
 }
-input[type="number"]:focus, select:focus { border-bottom: 2px solid var(--focus-glow); box-shadow: 0 8px 15px -8px rgba(255, 255, 255, 0.3); } /* Enhanced focus */
+input[type="number"]:focus, select:focus { border-bottom: 2px solid var(--focus-glow); box-shadow: 0 8px 15px -8px rgba(255, 255, 255, 0.3); }
 select {
-    background-color: var(--bg-color);
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20viewBox%3D'0%200%2014%2010'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l7%2010%207-10z'%20fill%3D'%23ffffff'/%3E%3C/svg%3E"); /* Bigger arrow */
-    background-repeat: no-repeat;
-    background-position: right 15px center; /* Adjusted position */
-    padding-right: 40px; /* More padding */
+    background-color: var(--bg-color); appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20viewBox%3D'0%200%2014%2010'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l7%2010%207-10z'%20fill%3D'%23ffffff'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 15px center; padding-right: 40px;
 }
 select option { background-color: #1a1a1a; color: var(--text-color); }
-
-/* Custom Checkbox & Radio */
 .checkbox-wrapper { margin-bottom: 25px; display: flex; align-items: flex-start; }
 input[type="checkbox"], input[type="radio"] { display: none; }
-
 input[type="checkbox"] + label, input[type="radio"] + label {
-    position: relative;
-    padding-left: 50px; /* INCREASED padding */
-    cursor: pointer;
-    font-size: 1.25rem; /* INCREASED FONT SIZE for questions */
-    color: var(--text-muted);
-    transition: color 0.3s ease;
-    line-height: 1.6;
-    display: block;
+    position: relative; padding-left: 50px; cursor: pointer; font-size: 1.25rem;
+    color: var(--text-muted); transition: color 0.3s ease; line-height: 1.6; display: block;
 }
 input[type="checkbox"] + label:hover, input[type="radio"] + label:hover { color: var(--text-color); }
-
 input[type="checkbox"] + label::before, input[type="radio"] + label::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 5px; /* Adjusted alignment for bigger font */
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--border-color);
-    background: var(--bg-color);
-    transition: all 0.3s ease;
+    content: ''; position: absolute; left: 0; top: 5px; width: 28px; height: 28px;
+    border: 2px solid var(--border-color); background: var(--bg-color); transition: all 0.3s ease;
 }
 input[type="radio"] + label::before { border-radius: 50%; }
 input[type="checkbox"] + label::before { border-radius: 6px; }
-
 input[type="checkbox"]:checked + label::before, input[type="radio"]:checked + label::before {
-    border-color: var(--focus-glow);
-    box-shadow: 0 0 15px var(--hover-glow);
+    border-color: var(--focus-glow); box-shadow: 0 0 15px var(--hover-glow);
 }
 input[type="checkbox"] + label::after, input[type="radio"] + label::after {
     content: ''; position: absolute; opacity: 0; transition: all 0.3s ease; transform: scale(0);
 }
 input[type="radio"]:checked + label::after {
-    left: 9px;
-    top: 12px; /* Adjusted position */
-    width: 10px;
-    height: 10px;
-    border-radius: 50%; background: var(--focus-glow); opacity: 1; transform: scale(1.2);
+    left: 9px; top: 12px; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--focus-glow); opacity: 1; transform: scale(1.2);
 }
 input[type="checkbox"]:checked + label::after {
-    left: 10px;
-    top: 8px; /* Adjusted position */
-    width: 8px;
-    height: 16px;
-    border: solid var(--focus-glow); border-width: 0 3px 3px 0;
-    background: transparent; opacity: 1; transform: rotate(45deg) scale(1);
+    left: 10px; top: 8px; width: 8px; height: 16px; border: solid var(--focus-glow);
+    border-width: 0 3px 3px 0; background: transparent; opacity: 1; transform: rotate(45deg) scale(1);
 }
-/* Biarkan .fieldset p dan lainnya tetap sama */
 fieldset p { margin-bottom: 20px; color: var(--text-color); font-size: 1.2rem; }
-/* Sesuaikan radio button di jogging agar font-nya tidak ikut besar jika tidak diinginkan */
 fieldset#form-target .checkbox-wrapper input[type="radio"] + label,
-fieldset legend:contains('Jogging') + p + .checkbox-wrapper input[type="radio"] + label {
-    font-size: 1.1rem;
-}
-
-/* Button */
+fieldset legend:contains('Jogging') + p + .checkbox-wrapper input[type="radio"] + label { font-size: 1.1rem; }
 button[type="submit"] {
-    display: block;
-    width: 260px; /* INCREASED */
-    margin: 40px auto 10px auto; /* Adjusted margin */
-    padding: 20px 30px; /* INCREASED */
-    background: transparent;
-    border: 2px solid var(--text-color);
-    color: var(--text-color);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.3rem; /* INCREASED */
-    font-weight: 500;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 2px; /* INCREASED */
+    display: block; width: 260px; margin: 40px auto 10px auto; padding: 20px 30px;
+    background: transparent; border: 2px solid var(--text-color); color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 500;
+    border-radius: 50px; cursor: pointer; transition: all 0.4s ease;
+    position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 2px;
 }
 button[type="submit"]::before {
     content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
     background: var(--text-color); transition: left 0.4s ease; z-index: -1;
 }
-button[type="submit"]:hover { color: var(--bg-color); box-shadow: 0 0 30px var(--hover-glow); } /* Enhanced glow */
+button[type="submit"]:hover { color: var(--bg-color); box-shadow: 0 0 30px var(--hover-glow); }
 button[type="submit"]:hover::before { left: 0; }
-
-/* === Target Display (NEW & SIZED UP) === */
 .target-display {
-    text-align: center;
-    margin-top: 40px; /* INCREASED */
-    padding: 20px; /* INCREASED */
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 8px; /* More rounded */
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly more visible border */
+    text-align: center; margin-top: 40px; padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05); border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .target-display p {
-    font-size: 1.6rem; /* INCREASED SIGNIFICANTLY */
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Enhanced glow */
-    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem; font-weight: 600; color: #ffffff; margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6); font-family: 'Space Grotesk', sans-serif;
 }
 .target-display p strong {
-    color: #cccccc;
-    font-weight: 400;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.3rem; /* Make label slightly smaller than number */
-    margin-right: 10px; /* Add space */
+    color: #cccccc; font-weight: 400; font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem; margin-right: 10px;
+}
+/* === AKHIR BAGIAN YANG TIDAK DIUBAH === */
+
+/* === Result Page Styles === */
+/* == Summary Grid (Tidak Diubah) == */
+.summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;
+    margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;
+}
+.summary-card {
+    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px;
+    padding: 20px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+.summary-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1); }
+.summary-card i { font-size: 2.2rem; color: var(--text-color); margin-bottom: 12px;
+    text-shadow: 0 0 8px var(--hover-glow); display: block; }
+.summary-label { font-size: 1rem; color: var(--text-muted); display: block; margin-bottom: 6px; }
+.summary-value { font-size: 1.6rem; font-weight: 700; color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif; display: block; }
+.summary-value.small { font-size: 1.3rem; }
+
+/* == Risk Grid (MODIFIKASI DIMULAI DI SINI) == */
+.risk-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(180px, auto);
+    gap: 20px; grid-auto-flow: dense; margin-top: 40px;
+}
+.risk-grid .result-item {
+    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px;
+    padding: 1em; display: flex; flex-direction: column; justify-content: space-between;
+    align-items: center; text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, opacity 0.4s ease;
+    min-height: 180px; opacity: 0; transform: scale(0.8);
+    animation: popIn 0.6s forwards ease-out; animation-delay: calc(0.08s * var(--index));
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04); position: relative;
 }
 
-/* === Result Styles === */
-.result-item {
-    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; /* More rounded */
-    padding: 30px 35px; /* INCREASED */
-    margin-bottom: 30px; /* INCREASED */
-    display: flex; justify-content: space-between; align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    opacity: 0; transform: translateX(-30px); animation: slideIn 0.6s forwards ease-out;
-    animation-delay: calc(0.5s + var(--index) * 0.1s);
+/* Ukuran Puzzle (Tidak Diubah) */
+.risk-grid .result-item:nth-child(1) { grid-column: span 2; grid-row: span 2; border-color: var(--focus-glow); border-width: 2px; }
+.risk-grid .result-item:nth-child(1):hover { border-color: var(--text-color); }
+.risk-grid .result-item:nth-child(2) { grid-column: span 2; grid-row: span 1; }
+.risk-grid .result-item:nth-child(3) { grid-column: span 1; grid-row: span 2; }
+.risk-grid .result-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+.risk-grid .result-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
+.risk-grid .result-item:nth-child(n+6) { grid-column: span 1; grid-row: span 1; font-size: 0.9rem; }
+
+/* Info Penyakit (Tidak Diubah) */
+.risk-grid .disease-info {
+    padding: 0.25em 0; /* UBAH: Padding relatif */
+    margin-bottom: 0.25em; /* UBAH: Margin bawah lebih kecil & relatif */
+    flex-grow: 1; display: flex;
+    flex-direction: column; justify-content: center; z-index: 1; transition: color 0.3s ease;
 }
-.result-item:hover { transform: translateX(0) scale(1.02); border-color: var(--focus-glow); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); } /* Enhanced hover */
-.disease-info { flex-grow: 1; padding-right: 30px; }
-.disease-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.6rem; color: var(--text-color); margin-bottom: 10px; } /* INCREASED */
-.disease-description { font-size: 1.1rem; color: var(--text-muted); font-weight: 300; } /* INCREASED */
-.percentage-chart { position: relative; width: 80px; height: 80px; flex-shrink: 0; } /* Keeping 80px for now, but text is bigger */
-.percentage-svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7)); }
-.circle-bg, .circle-progress { fill: none; stroke-width: 9; stroke-linecap: round; }
-.circle-bg { stroke: rgba(255, 255, 255, 0.2); }
-.circle-progress {
-    stroke: var(--text-color); stroke-dasharray: 213.6; stroke-dashoffset: 213.6;
-    animation: drawCircle 1.2s forwards ease-out; animation-delay: calc(0.7s + var(--index) * 0.1s);
+
+.risk-grid .disease-title {
+    font-size: 1.1em; /* UBAH: Sesuaikan ukuran relatif */
+    font-weight: 700; color: var(--text-color);
+    margin-bottom: 0.4em; /* UBAH: Margin relatif */
+    line-height: 1.3; transition: color 0.3s ease;
 }
-.percentage-text {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 1.4rem; font-weight: 600; color: var(--text-color); font-family: 'Space Grotesk', sans-serif; /* INCREASED */
+.risk-grid .disease-description {
+    font-size: 0.75em; /* UBAH: Sesuaikan ukuran relatif */
+    color: var(--text-muted); line-height: 1.5; transition: color 0.3s ease;
 }
-.mt-6 { margin-top: 60px; text-align: center; } /* INCREASED */
+
+/* == Percentage Chart & Circle (DIMODIFIKASI) == */
+.risk-grid .percentage-chart {
+    width: 4em; /* UBAH: Lebar chart relatif */
+    height: 4em; /* UBAH: Tinggi chart relatif */
+    margin-top: auto; /* Biarkan auto untuk mendorong ke bawah, tapi jarak dikontrol oleh margin-bottom disease-info */
+    position: relative;
+    z-index: 1;
+}
+.risk-grid .percentage-svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+    transition: filter 0.3s ease;
+    transform: rotate(-90deg); /* FIX 3: Putar SVG agar mulai dari jam 12 */
+    transform-origin: 50% 50%; /* Titik rotasi di tengah */
+}
+.risk-grid .circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1); /* Warna background lingkaran */
+    stroke-width: 8;
+    transition: stroke 0.3s ease;
+}
+.risk-grid .circle-progress {
+    fill: none;
+    stroke: var(--text-color); /* Warna progress */
+    stroke-width: 8;
+    stroke-linecap: round; /* Ujung progress lebih halus */
+    stroke-dashoffset: 213.6; /* Nilai awal (full) - harusnya sama dgn circumference */
+    /* Animasi menggunakan --offset dari HTML */
+    animation: drawCircle 1.2s forwards ease-out; /* 'forwards' agar tetap di akhir */
+    animation-delay: calc(0.7s * var(--index));
+    transition: stroke 0.3s ease; /* Transisi untuk warna saat hover */
+}
+/* == Tambahan: Percentage Text (DIMODIFIKASI/DITAMBAH) == */
+.risk-grid .percentage-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1em; /* UBAH: Ukuran teks relatif */
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    z-index: 5;
+}
+
+/* == Hover State (DIMODIFIKASI) == */
+.risk-grid .result-item:hover {
+    transform: scale(1.03);
+    background-color: var(--text-color); /* Background jadi putih */
+    border-color: var(--text-color);
+    box-shadow: 0 0 25px var(--text-color), 0 0 40px var(--hover-glow);
+    z-index: 10;
+}
+.risk-grid .result-item:hover .disease-title { color: var(--text-hover-invert); }
+.risk-grid .result-item:hover .disease-description { color: var(--text-muted-hover-invert); }
+.risk-grid .result-item:hover .percentage-text { color: var(--text-hover-invert); } /* FIX 4: Teks tetap terlihat */
+.risk-grid .result-item:hover .circle-bg { stroke: rgba(0, 0, 0, 0.15); }
+.risk-grid .result-item:hover .circle-progress {
+    stroke: var(--circle-hover-stroke); /* FIX 4: Warna progress jadi gelap */
+    /* TIDAK ada perubahan 'animation' atau 'stroke-dashoffset' agar tidak reset */
+}
+.risk-grid .result-item:hover .percentage-svg { filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2)); }
+
+/* === Link Kembali (Tidak Diubah) === */
+.mt-6 { margin-top: 60px; text-align: center; }
 .mt-6 a {
     color: var(--text-muted); text-decoration: none; font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.2rem; border: 1px solid var(--border-color); padding: 12px 25px; /* INCREASED */
-    border-radius: 30px; transition: all 0.3s ease; /* INCREASED */
+    font-size: 1.2rem; border: 1px solid var(--border-color); padding: 12px 25px;
+    border-radius: 30px; transition: all 0.3s ease;
 }
-.mt-6 a:hover { color: var(--text-color); border-color: var(--text-color); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+.mt-6 a:hover {
+    color: var(--text-color); border-color: var(--text-color);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
 
-/* === Animations === */
+/* === Animations (Hanya drawCircle dimodifikasi sedikit) === */
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInDown { to { opacity: 1; transform: translateY(0); } }
-@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
-@keyframes drawCircle { to { stroke-dashoffset: var(--offset); } }
+@keyframes popIn { to { opacity: 1; transform: scale(1); } }
+@keyframes drawCircle {
+    to {
+        stroke-dashoffset: var(--offset); /* Animasi bergerak ke nilai offset */
+    }
+}
 
-/* === Spin Button Removal === */
-input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+/* === Spin Button Removal (Tidak Diubah) === */
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; margin: 0;
+}
 input[type="number"] { -moz-appearance: textfield; }
