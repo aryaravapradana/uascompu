@@ -26,15 +26,15 @@ body {
     line-height: 1.8;
     padding: 30px;
     overflow-x: hidden;
-    font-size: 20px;
+    font-size: 18px; /* Sedikit disesuaikan base font-size untuk mengakomodasi teks yang lebih besar di card */
 }
 
 .container {
     width: 90%;
-    max-width: 1600px;
+    max-width: 1300px; /* UBAH: Naikkan max-width agar ada ruang lebih untuk summary cards */
     margin: 50px auto;
     background: var(--bg-color);
-    padding: 50px 60px;
+    padding: 40px 50px; 
     border-radius: 16px;
     border: 1px solid var(--border-color);
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
@@ -43,11 +43,12 @@ body {
     animation: fadeInUp 1s forwards ease-out;
 }
 
+
 h1, h2 {
     font-family: 'Space Grotesk', sans-serif;
     color: var(--text-color);
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
     font-weight: 700;
     letter-spacing: 2px;
@@ -55,12 +56,12 @@ h1, h2 {
     transform: translateY(-20px);
     animation: fadeInDown 0.8s forwards ease-out 0.3s;
 }
-h1 { font-size: 3.2rem; margin-bottom: 60px; }
-h2 { font-size: 2.4rem; margin-top: 70px; }
-p { margin-bottom: 18px; font-size: 1.15rem; }
+h1 { font-size: 2.8rem; margin-bottom: 50px; } /* Disesuaikan */
+h2 { font-size: 2rem; margin-top: 60px; } /* Disesuaikan */
+p { margin-bottom: 16px; font-size: 1.1rem; } /* Disesuaikan */
 
-/* === Form Styles === */
-/* === TIDAK ADA PERUBAHAN DI SINI === */
+/* === Form Styles === (TIDAK DIUBAH dari versi sebelumnya) */
+/* ... (salin semua form styles dari CSS Anda sebelumnya) ... */
 form { margin-bottom: 60px; }
 fieldset {
     border: 1px dashed var(--border-color); padding: 40px; border-radius: 12px;
@@ -141,109 +142,155 @@ button[type="submit"]:hover::before { left: 0; }
     color: #cccccc; font-weight: 400; font-family: 'Poppins', sans-serif;
     font-size: 1.3rem; margin-right: 10px;
 }
-/* === AKHIR BAGIAN YANG TIDAK DIUBAH === */
 
 /* === Result Page Styles === */
-/* == Summary Grid (Tidak Diubah) == */
+/* == Summary Grid (Tidak Diubah dari versi sebelumnya) == */
+/* ... (salin summary-grid styles dari CSS Anda sebelumnya) ... */
 .summary-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px;
-    margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 30px;
+    display: grid;
+    /* UBAH: Paksa 5 kolom, masing-masing mengambil fraksi yang sama dari ruang tersedia */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 25px;
+    margin-bottom: 40px; 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 30px;
 }
 .summary-card {
-    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px;
-    padding: 20px; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px;
+    padding: 20px; /* Anda bisa menambah padding ini jika ingin konten di dalam kartu punya lebih banyak ruang */
+    text-align: center; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    display: flex; /* Tambahan: untuk alignment konten kartu jika diperlukan */
+    flex-direction: column; /* Tambahan: untuk alignment konten kartu jika diperlukan */
+    justify-content: center; /* Tambahan: untuk alignment konten kartu jika diperlukan */
+    align-items: center; /* Tambahan: untuk alignment konten kartu jika diperlukan */
 }
-.summary-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1); }
-.summary-card i { font-size: 2.2rem; color: var(--text-color); margin-bottom: 12px;
-    text-shadow: 0 0 8px var(--hover-glow); display: block; }
-.summary-label { font-size: 1rem; color: var(--text-muted); display: block; margin-bottom: 6px; }
-.summary-value { font-size: 1.6rem; font-weight: 700; color: var(--text-color);
-    font-family: 'Space Grotesk', sans-serif; display: block; }
-.summary-value.small { font-size: 1.3rem; }
+.summary-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1); 
+}
+.summary-card i { 
+    font-size: 2.2rem; 
+    color: var(--text-color); 
+    margin-bottom: 12px;
+    text-shadow: 0 0 8px var(--hover-glow); 
+    display: block; 
+}
+.summary-label { 
+    font-size: 1rem; 
+    color: var(--text-muted); 
+    display: block; 
+    margin-bottom: 6px; 
+}
+.summary-value { 
+    font-size: 1.6rem; 
+    font-weight: 700; 
+    color: var(--text-color);
+    font-family: 'Space Grotesk', sans-serif; 
+    display: block; 
+}
+.summary-value.small { 
+    font-size: 1.3rem; 
+}
 
-/* == Risk Grid (MODIFIKASI DIMULAI DI SINI) == */
+
+/* == Risk Grid (MODIFIKASI UNTUK UKURAN TEKS NON-HOVER) == */
 .risk-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(180px, auto);
-    gap: 20px; grid-auto-flow: dense; margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* << PASTIKAN INI ADA dan tidak terhapus/tertimpa */
+    margin-top: 40px;
 }
+
 .risk-grid .result-item {
-    background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px;
-    padding: 1em; display: flex; flex-direction: column; justify-content: space-between;
-    align-items: center; text-align: center;
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 28px 25px; 
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, opacity 0.4s ease;
-    min-height: 180px; opacity: 0; transform: scale(0.8);
-    animation: popIn 0.6s forwards ease-out; animation-delay: calc(0.08s * var(--index));
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04); position: relative;
+    opacity: 0;
+    transform: scale(0.95); 
+    animation: popIn 0.6s forwards ease-out;
+    animation-delay: calc(0.08s * var(--index));
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.04);
+    position: relative;
+    overflow: hidden; 
 }
 
-/* Ukuran Puzzle (Tidak Diubah) */
-.risk-grid .result-item:nth-child(1) { grid-column: span 2; grid-row: span 2; border-color: var(--focus-glow); border-width: 2px; }
-.risk-grid .result-item:nth-child(1):hover { border-color: var(--text-color); }
-.risk-grid .result-item:nth-child(2) { grid-column: span 2; grid-row: span 1; }
-.risk-grid .result-item:nth-child(3) { grid-column: span 1; grid-row: span 2; }
-.risk-grid .result-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
-.risk-grid .result-item:nth-child(5) { grid-column: span 2; grid-row: span 1; }
-.risk-grid .result-item:nth-child(n+6) { grid-column: span 1; grid-row: span 1; font-size: 0.9rem; }
-
-/* Info Penyakit (Tidak Diubah) */
-.risk-grid .disease-info {
-    padding: 0.25em 0; /* UBAH: Padding relatif */
-    margin-bottom: 0.25em; /* UBAH: Margin bawah lebih kecil & relatif */
-    flex-grow: 1; display: flex;
-    flex-direction: column; justify-content: center; z-index: 1; transition: color 0.3s ease;
+/* ... (CSS untuk .disease-content, .disease-title, .disease-description, .percentage-chart, dll., tetap sama seperti respons sebelumnya) ... */
+/* Contoh .disease-content untuk kelengkapan */
+.risk-grid .disease-content {
+    flex-grow: 1; 
+    padding-right: 25px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    text-align: left; 
+    transition: transform 0.3s ease-out; 
 }
 
 .risk-grid .disease-title {
-    font-size: 1.1em; /* UBAH: Sesuaikan ukuran relatif */
-    font-weight: 700; color: var(--text-color);
-    margin-bottom: 0.4em; /* UBAH: Margin relatif */
-    line-height: 1.3; transition: color 0.3s ease;
-}
-.risk-grid .disease-description {
-    font-size: 0.75em; /* UBAH: Sesuaikan ukuran relatif */
-    color: var(--text-muted); line-height: 1.5; transition: color 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.9rem; 
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.4em; 
+    line-height: 1.25;   
+    transition: color 0.3s ease, transform 0.3s ease-out; 
+    transform-origin: left center; 
 }
 
-/* == Percentage Chart & Circle (DIMODIFIKASI) == */
+.risk-grid .disease-description {
+    font-size: 1.05rem; 
+    color: var(--text-muted);
+    line-height: 1.5;   
+    transition: color 0.3s ease, transform 0.3s ease-out; 
+    transform-origin: left center; 
+}
+
 .risk-grid .percentage-chart {
-    width: 4em; /* UBAH: Lebar chart relatif */
-    height: 4em; /* UBAH: Tinggi chart relatif */
-    margin-top: auto; /* Biarkan auto untuk mendorong ke bawah, tapi jarak dikontrol oleh margin-bottom disease-info */
+    width: 90px; 
+    height: 90px; 
     position: relative;
     z-index: 1;
+    flex-shrink: 0; 
 }
 .risk-grid .percentage-svg {
     width: 100%; height: 100%;
     filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
     transition: filter 0.3s ease;
-    transform: rotate(-90deg); /* FIX 3: Putar SVG agar mulai dari jam 12 */
-    transform-origin: 50% 50%; /* Titik rotasi di tengah */
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
 }
 .risk-grid .circle-bg {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.1); /* Warna background lingkaran */
-    stroke-width: 8;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 8; 
     transition: stroke 0.3s ease;
 }
 .risk-grid .circle-progress {
     fill: none;
-    stroke: var(--text-color); /* Warna progress */
-    stroke-width: 8;
-    stroke-linecap: round; /* Ujung progress lebih halus */
-    stroke-dashoffset: 213.6; /* Nilai awal (full) - harusnya sama dgn circumference */
-    /* Animasi menggunakan --offset dari HTML */
-    animation: drawCircle 1.2s forwards ease-out; /* 'forwards' agar tetap di akhir */
-    animation-delay: calc(0.7s * var(--index));
-    transition: stroke 0.3s ease; /* Transisi untuk warna saat hover */
+    stroke: var(--text-color);
+    stroke-width: 8; 
+    stroke-linecap: round;
+    stroke-dashoffset: 213.628; /* Sesuai circumference 2*PI*34 */
+    animation: drawCircle 1.2s forwards ease-out;
+    animation-delay: calc(0.08s * var(--index) + 0.2s); 
+    transition: stroke 0.3s ease; 
 }
-/* == Tambahan: Percentage Text (DIMODIFIKASI/DITAMBAH) == */
 .risk-grid .percentage-text {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.1em; /* UBAH: Ukuran teks relatif */
+    font-size: 1.3rem; 
     color: var(--text-color);
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
@@ -251,27 +298,76 @@ button[type="submit"]:hover::before { left: 0; }
     z-index: 5;
 }
 
-/* == Hover State (DIMODIFIKASI) == */
 .risk-grid .result-item:hover {
-    transform: scale(1.03);
-    background-color: var(--text-color); /* Background jadi putih */
+    transform: scale(1.01); 
+    background-color: var(--text-color);
     border-color: var(--text-color);
-    box-shadow: 0 0 25px var(--text-color), 0 0 40px var(--hover-glow);
+    box-shadow: 0 5px 30px var(--text-color), 0 0 50px var(--hover-glow); 
     z-index: 10;
 }
+
+.risk-grid .result-item:hover .disease-title,
+.risk-grid .result-item:hover .disease-description {
+    transform: scale(0.92); 
+}
+
 .risk-grid .result-item:hover .disease-title { color: var(--text-hover-invert); }
 .risk-grid .result-item:hover .disease-description { color: var(--text-muted-hover-invert); }
-.risk-grid .result-item:hover .percentage-text { color: var(--text-hover-invert); } /* FIX 4: Teks tetap terlihat */
+.risk-grid .result-item:hover .percentage-text { color: var(--text-hover-invert); }
 .risk-grid .result-item:hover .circle-bg { stroke: rgba(0, 0, 0, 0.15); }
-.risk-grid .result-item:hover .circle-progress {
-    stroke: var(--circle-hover-stroke); /* FIX 4: Warna progress jadi gelap */
-    /* TIDAK ada perubahan 'animation' atau 'stroke-dashoffset' agar tidak reset */
-}
+.risk-grid .result-item:hover .circle-progress { stroke: var(--circle-hover-stroke); }
 .risk-grid .result-item:hover .percentage-svg { filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.2)); }
 
-
+.wiki-button {
+    display: inline-block; 
+    padding: 0.5em 1em; 
+    border: 1px solid var(--border-color); 
+    border-radius: 20px;
+    color: var(--text-muted); 
+    font-size: 0.8rem; 
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif; 
+    text-decoration: none;
+    transition: opacity 0.3s ease-out 0.1s, transform 0.3s ease-out 0.1s, color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease,
+                max-height 0.4s ease-out, 
+                margin-top 0.4s ease-out, 
+                padding-top 0.4s ease-out, padding-bottom 0.4s ease-out;
+    opacity: 0;
+    transform: translateY(10px) scale(0.95); 
+    pointer-events: none;
+    background-color: transparent;
+    z-index: 5;
+    position: relative;
+    align-self: flex-start; 
+    max-height: 0;         
+    overflow: hidden;      
+    margin-top: 0;         
+    padding-top: 0;        
+    padding-bottom: 0;     
+    border-width: 0px;     
+}
+.wiki-button i { margin-left: 0.4em; }
+.risk-grid .result-item:hover .wiki-button {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    color: var(--text-muted-hover-invert); 
+    border-color: var(--text-muted-hover-invert); 
+    max-height: 5em;       
+    margin-top: 0.8em;     
+    padding-top: 0.5em;    
+    padding-bottom: 0.5em; 
+    border-width: 1px;     
+}
+.risk-grid .result-item:hover .wiki-button:hover {
+    background-color: var(--text-hover-invert); 
+    color: var(--text-color); 
+    border-color: var(--text-hover-invert); 
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); 
+}
 
 /* === Link Kembali (Tidak Diubah) === */
+/* ... (salin dari CSS sebelumnya) ... */
 .mt-6 { margin-top: 60px; text-align: center; }
 .mt-6 a {
     color: var(--text-muted); text-decoration: none; font-family: 'Space Grotesk', sans-serif;
@@ -284,25 +380,28 @@ button[type="submit"]:hover::before { left: 0; }
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* === Animations (Hanya drawCircle dimodifikasi sedikit) === */
+
+/* === Animations (Tidak Diubah kecuali drawCircle jika perlu penyesuaian circumference) === */
+/* ... (salin dari CSS sebelumnya) ... */
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInDown { to { opacity: 1; transform: translateY(0); } }
-@keyframes popIn { to { opacity: 1; transform: scale(1); } }
+@keyframes popIn { to { opacity: 1; transform: scale(1); } } /* Target scale untuk popIn jadi 1 */
 @keyframes drawCircle {
     to {
-        stroke-dashoffset: var(--offset); /* Animasi bergerak ke nilai offset */
+        stroke-dashoffset: var(--offset);
     }
 }
 
 /* === Spin Button Removal (Tidak Diubah) === */
+/* ... (salin dari CSS sebelumnya) ... */
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none; margin: 0;
 }
 input[type="number"] { -moz-appearance: textfield; }
 
-/* === Warning Vibe Animation (FIXED) === */
 
-/* Definisikan Animasi Denyut Merah (Tetap Sama) */
+/* === Warning Vibe Animation (Tidak Diubah, ini penting untuk risk-high) === */
+/* ... (salin dari CSS sebelumnya) ... */
 @keyframes pulseRedGlow {
   0% {
     border-color: rgba(255, 77, 77, 0.6);
@@ -321,103 +420,26 @@ input[type="number"] { -moz-appearance: textfield; }
   }
 }
 
-/* Pastikan .result-item dasar Anda MASIH memiliki animasi popIn asli. 
-  Contohnya seperti ini (JANGAN UBAH JIKA SUDAH BENAR):
-*/
-.risk-grid .result-item {
-    /* ... (gaya-gaya Anda yang lain) ... */
-    animation: popIn 0.6s forwards ease-out; /* <-- INI PENTING */
-    animation-delay: calc(0.08s * var(--index)); /* <-- INI PENTING */
-    /* ... (gaya-gaya Anda yang lain) ... */
-}
-
-
-/* Gaya untuk card berisiko tinggi: 
-  Terapkan KEDUA animasi dengan delay yang sesuai.
-*/
 .risk-grid .result-item.risk-high {
-  /* Tentukan NAMA animasi (popIn dulu, baru pulseRedGlow) */
   animation-name: popIn, pulseRedGlow;
-  
-  /* Tentukan DURASI untuk masing-masing */
   animation-duration: 0.6s, 2s;
-
-  /* Tentukan PENGISIAN AKHIR (hanya untuk popIn) & PERULANGAN (hanya untuk pulse) */
   animation-fill-mode: forwards, none;
   animation-iteration-count: 1, infinite;
-
-  /* Tentukan FUNGSI WAKTU untuk masing-masing */
   animation-timing-function: ease-out, ease-in-out;
-
-  /* Tentukan DELAY untuk masing-masing */
-  /* popIn delay: seperti biasa */
-  /* pulseRedGlow delay: delay popIn + durasi popIn + sedikit jeda (misal 0.1s) */
   animation-delay: calc(0.08s * var(--index)), 
                    calc(0.08s * var(--index) + 0.7s);
-
-  /* Atur border dasar agar terlihat merah saat animasi berjalan */
   border-color: #ff4d4d;
 }
 
-/* Gaya hover untuk card berisiko tinggi:
-  Kita HANYA perlu override border & shadow. 
-  Animasi pulse akan terus berjalan, tapi secara visual akan tertutup oleh 
-  efek hover putih yang lebih kuat, jadi tidak perlu `animation: none;`.
+/* Hover untuk risk-high item tetap mengikuti hover standar item,
+   hanya saja animasi pulseRedGlow akan tetap berjalan di 'belakang'
+   efek background putih. Jika ingin menghentikan animasi pulse saat hover,
+   Anda bisa menambahkan 'animation-play-state: paused;' pada selector ini
+   atau men-disable animasi pulseRedGlow secara spesifik.
+   Namun, biasanya efek visual tertimpa sudah cukup.
 */
 .risk-grid .result-item.risk-high:hover {
-  border-color: var(--text-color); /* Kembali ke border putih saat hover */
-  box-shadow: 0 0 25px var(--text-color), 0 0 40px var(--hover-glow); /* Shadow putih */
-  /* Hapus 'animation: none;' agar popIn 'forwards' tidak hilang */
-}
-
-/* === Wikipedia Button Styling (BARU) === */
-.wiki-button {
-    display: inline-block;
-    padding: 0.5em 1.2em;
-    margin-top: 1.2em; /* Jarak dari chart */
-    border: 1px solid var(--border-color);
-    border-radius: 30px; /* Bikin oval */
-    color: var(--text-muted);
-    font-size: 0.7em; /* Ukuran font lebih kecil */
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.4s ease;
-    opacity: 0; /* Sembunyikan defaultnya */
-    transform: translateY(15px); /* Posisi awal sedikit ke bawah */
-    pointer-events: none; /* Belum bisa diklik */
-    background-color: transparent;
-    z-index: 5; /* Pastikan di atas ikon BG jika ada */
-    position: relative; /* Agar z-index bekerja baik */
-}
-
-.wiki-button i {
-    margin-left: 0.5em;
-}
-
-/* Munculkan tombol saat card di-hover */
-.risk-grid .result-item:hover .wiki-button {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto; /* Bisa diklik sekarang */
-}
-
-/* Efek hover untuk tombol itu sendiri */
-.wiki-button:hover {
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    border-color: var(--text-color);
-    box-shadow: 0 0 15px var(--hover-glow);
-}
-
-/* Pastikan tombol juga ikut invert warnanya saat di-hover (jika belum di-hover langsung) */
-.risk-grid .result-item:hover .wiki-button {
-  color: var(--text-hover-invert); /* Saat card hover, tombol jadi gelap */
-  border-color: var(--text-hover-invert);
-}
-
-/* Tapi saat tombolnya sendiri di-hover, dia jadi terang (override) */
-.risk-grid .result-item:hover .wiki-button:hover {
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    border-color: var(--text-color);
+  border-color: var(--text-color); 
+  box-shadow: 0 5px 30px var(--text-color), 0 0 50px var(--hover-glow);
+  /* Tidak perlu override animasi karena efek hover putih akan menutupi visual merahnya */
 }
