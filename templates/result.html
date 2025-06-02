@@ -44,7 +44,7 @@
             {% if hasil %}
                 {% for penyakit, persen in hasil %}
                     {# Pengaturan untuk Chart Lingkaran & Animasi #}
-                    {% set circumference = 2 * 3.14159 * 34 %}
+                    {% set circumference = 2 * 3.1415926535 * 34 %} {# Lebih presisi untuk PI #}
                     {% set offset = circumference - (persen / 100 * circumference) %}
                     {% set index = loop.index0 %}
 
@@ -71,16 +71,20 @@
                     {% set current_disease_info = disease_details.get(penyakit, {'desc': 'Info belum tersedia.', 'url': '#'}) %}
                     {% set wiki_url = current_disease_info.get('url') %}
 
-                    {# --- Struktur Card Penyakit --- #}
-                    <div class="result-item {% if persen > 20 %}risk-high{% endif %}" style="--index: {{ index }};">
+                    {# --- Struktur Card Penyakit (MODIFIED)--- #}
+                    <div class="result-item {% if persen > 25 %}risk-high{% endif %}" style="--index: {{ index }};">
                         
-                        <div class="disease-info">
+                        <div class="disease-content">  {# UBAH: Wrapper untuk konten kiri #}
                             <div class="disease-title">{{ penyakit.title() }}</div>
                             <p class="disease-description">{{ current_disease_info.desc }}</p>
+                            {# --- Tombol Wikipedia dipindahkan ke sini --- #}
+                            <a href="{{ wiki_url }}" class="wiki-button" target="_blank" rel="noopener noreferrer">
+                                Info Lebih Lanjut <i class="fas fa-external-link-alt fa-xs"></i>
+                            </a>
                         </div>
 
                         <div class="percentage-chart">
-                            <svg class="percentage-svg" viewBox="0 0 80 80">
+                            <svg class="percentage-svg" viewBox="0 0 80 80"> {/* viewBox disamakan dengan contoh HTML sebelumnya jika ukurannya 80x80px */}
                                 <circle class="circle-bg" cx="40" cy="40" r="34"></circle>
                                 <circle class="circle-progress" cx="40" cy="40" r="34"
                                         stroke-dasharray="{{ circumference }}"
@@ -90,11 +94,7 @@
                             <div class="percentage-text">{{ persen }}%</div>
                         </div>
 
-                        {# --- Tombol Wikipedia Internal --- #}
-                        <a href="{{ wiki_url }}" class="wiki-button" target="_blank" rel="noopener noreferrer">
-                            Info Lebih Lanjut <i class="fas fa-external-link-alt fa-xs"></i>
-                        </a>
-
+                        {# HAPUS: Tombol Wikipedia dari posisi lama di sini, karena sudah dipindah ke dalam disease-content #}
                     </div> 
                 {% endfor %}
             {% else %}
